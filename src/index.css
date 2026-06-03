@@ -1,0 +1,1067 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Bảng màu chủ đạo — xanh lá câu lạc bộ */
+  --green-900: #14532d;
+  --green-800: #166534;
+  --green-700: #15803d;
+  --green-600: #16a34a;
+  --green-500: #22c55e;
+  --green-200: #bbf7d0;
+  --green-100: #dcfce7;
+  --green-50:  #f0fdf4;
+
+  /* Nền & bề mặt */
+  --bg:        #f5f7f5;
+  --panel:     #ffffff;
+  --surface:   #f8faf8;
+
+  /* Chữ */
+  --ink:       #111b11;
+  --ink-soft:  #4b5e4b;
+  --muted:     #7a917a;
+
+  /* Viền */
+  --line:      #e3ebe3;
+  --line-md:   #ccdacc;
+
+  /* Trạng thái */
+  --danger:      #c0392b;
+  --danger-soft: #fdf2f2;
+  --warn-soft:   #fffbeb;
+  --warn-ink:    #854d0e;
+
+  /* Đội */
+  --team-a: #1d4ed8;
+  --team-b: #b45309;
+
+  --radius:    12px;
+  --radius-sm: 9px;
+  --shadow:    0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.09);
+  --maxw:      1060px;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* ================================================================
+   TOPBAR — nền xanh câu lạc bộ
+================================================================ */
+.topbar {
+  background: linear-gradient(135deg, var(--green-900) 0%, var(--green-800) 100%);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+.topbar-inner,
+.tabs-inner,
+.content-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+/* Logo / brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.brand-sub {
+  font-size: 11.5px;
+  color: rgba(255,255,255,.6);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+/* Khu vực bên phải topbar */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Nút trên topbar (nền trắng mờ) */
+.btn-topbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1;
+  cursor: pointer;
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.9);
+  transition: background .12s ease, border-color .12s ease;
+}
+
+.btn-topbar:hover {
+  background: rgba(255,255,255,.22);
+  border-color: rgba(255,255,255,.4);
+  color: #fff;
+}
+
+.btn-topbar.danger:hover {
+  background: rgba(220,38,38,.4);
+  border-color: rgba(255,150,150,.5);
+}
+
+/* Nút Admin/Guest */
+.btn-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 13.5px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  background: rgba(255,255,255,.1);
+  color: rgba(255,255,255,.75);
+  transition: all .12s ease;
+}
+
+.btn-admin:hover {
+  background: rgba(255,255,255,.2);
+  color: #fff;
+}
+
+.btn-admin.is-admin {
+  background: var(--green-600);
+  border-color: var(--green-500);
+  color: #fff;
+}
+
+/* ================================================================
+   TABS — nằm cuối topbar, nền xanh đậm hơn 1 chút
+================================================================ */
+.tabs {
+  background: rgba(0,0,0,.15);
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.tabs-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tabs-list {
+  display: flex;
+  gap: 2px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 12px 14px;
+  color: rgba(255,255,255,.6);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .12s ease, border-color .12s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: rgba(255,255,255,.9);
+}
+
+.tab-active {
+  color: #fff;
+  border-bottom-color: var(--green-500);
+}
+
+.tabs-status {
+  color: rgba(255,255,255,.5);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+/* ================================================================
+   CONTENT
+================================================================ */
+.content {
+  padding: 28px 0 48px;
+}
+
+.content-inner {
+  width: 100%;
+}
+
+/* ================================================================
+   TYPOGRAPHY HELPERS
+================================================================ */
+.panel-head {
+  margin-bottom: 20px;
+}
+
+.panel-head h2 { font-size: 20px; }
+.panel-head h3 { font-size: 16px; color: var(--ink-soft); }
+
+.section-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.muted {
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin: 3px 0 0;
+}
+
+.small { font-size: 12.5px; }
+
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  padding: 36px 24px;
+  background: var(--panel);
+  border: 1.5px dashed var(--line-md);
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+
+/* ================================================================
+   BUTTONS — trong content (nền sáng)
+================================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1.1;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease, color .12s ease, box-shadow .12s ease;
+}
+
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn svg { flex: none; }
+
+.btn-primary {
+  background: var(--green-700);
+  color: #fff;
+  border-color: var(--green-700);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--green-800);
+  border-color: var(--green-800);
+  box-shadow: 0 2px 8px rgba(22,101,52,.35);
+}
+
+.btn-outline {
+  background: var(--panel);
+  border-color: var(--line-md);
+  color: var(--ink);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--green-600);
+  color: var(--green-800);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #a93226;
+  box-shadow: 0 2px 8px rgba(192,57,43,.35);
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+/* Nút văn bản nhỏ (Sửa / Xoá người chơi) */
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 5px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background .1s ease, color .1s ease;
+}
+
+.btn-link:hover { background: var(--green-50); color: var(--green-800); }
+.btn-link.danger:hover { background: var(--danger-soft); color: var(--danger); }
+
+/* Nút icon (xoá trận) */
+.icon-btn {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: inline-flex;
+  transition: background .1s ease, color .1s ease;
+}
+
+.icon-btn:hover { background: var(--danger-soft); color: var(--danger); }
+
+/* ================================================================
+   CARDS
+================================================================ */
+.card {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* ================================================================
+   BADGES
+================================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 999px;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.badge-open {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.badge-open .dot { background: var(--green-600); }
+
+.badge-closed {
+  background: #f1f3f1;
+  color: var(--muted);
+  border: 1px solid var(--line-md);
+}
+
+.badge-closed .dot { background: #b0bcb0; }
+
+/* ================================================================
+   COURT GRID
+================================================================ */
+.court-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.court-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Dải màu đầu card — "sân" */
+.court-card-stripe {
+  height: 6px;
+  background: var(--line-md);
+}
+
+.court-card.is-open .court-card-stripe {
+  background: linear-gradient(90deg, var(--green-600), var(--green-500));
+}
+
+.court-card-body {
+  padding: 18px 20px 20px;
+}
+
+.court-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.court-card-top h3 { font-size: 18px; }
+
+.court-empty {
+  margin: 14px 0 2px;
+  font-size: 14px;
+}
+
+/* Thống kê sân */
+.court-stats {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: grid;
+  gap: 0;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.court-stats li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  padding: 9px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.court-stats li:last-child { border-bottom: none; }
+
+.stat-label { color: var(--ink-soft); }
+
+.stat-value {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* ================================================================
+   PARTICIPANTS (chip đăng ký)
+================================================================ */
+.participants { margin-top: 2px; }
+
+.participants-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.participants h4,
+.team h4 {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1.5px solid var(--line-md);
+  background: var(--panel);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color .12s, background .12s, color .12s;
+}
+
+.chip svg { flex: none; color: var(--muted); }
+
+.chip:hover { border-color: var(--green-600); }
+
+.chip-on {
+  background: var(--green-100);
+  border-color: var(--green-500);
+  color: var(--green-800);
+  font-weight: 600;
+}
+
+.chip-on svg { color: var(--green-600); }
+
+.chip-static {
+  cursor: default;
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+
+/* ================================================================
+   FORMS
+================================================================ */
+.inline-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.inline-form.grow { flex: 1; margin-bottom: 0; }
+
+.input {
+  border: 1.5px solid var(--line-md);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  flex: 1;
+  background: var(--panel);
+  color: var(--ink);
+  width: 100%;
+  transition: border-color .12s, box-shadow .12s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.13);
+}
+
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+
+.field label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.score-input { max-width: 110px; }
+
+/* ================================================================
+   PLAYER LIST
+================================================================ */
+.player-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px 9px 14px;
+  transition: border-color .12s;
+}
+
+.player-row:hover { border-color: var(--green-200); }
+
+.player-index {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  background: var(--green-100);
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--green-800);
+}
+
+.player-name { font-weight: 600; flex: 1; }
+
+.row-actions { display: flex; gap: 2px; }
+
+/* ================================================================
+   MATCH FORM
+================================================================ */
+.match-form { margin-bottom: 8px; }
+
+/* Hàng trên của form: thể thức + sân */
+.form-row-top {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+/* Toggle 1v1 / 2v2 */
+.format-toggle {
+  display: flex;
+  border: 1.5px solid var(--line-md);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.format-btn {
+  flex: 1;
+  padding: 9px 18px;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: .04em;
+  transition: background .12s ease, color .12s ease;
+}
+
+.format-btn + .format-btn {
+  border-left: 1.5px solid var(--line-md);
+}
+
+.format-btn.active {
+  background: var(--green-700);
+  color: #fff;
+}
+
+.format-btn:not(.active):hover {
+  background: var(--green-50);
+  color: var(--green-800);
+}
+
+/* Badge thể thức trong match card */
+.format-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 5px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.format-1v1 {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.format-2v2 {
+  background: var(--green-50);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-top: 14px;
+}
+
+.team {
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  border: 1.5px solid var(--line);
+}
+
+.team-a {
+  border-top: 4px solid var(--team-a);
+  background: #f0f5ff;
+}
+
+.team-b {
+  border-top: 4px solid var(--team-b);
+  background: #fffaf0;
+}
+
+.team .field:last-child { margin-bottom: 0; }
+
+.vs {
+  align-self: center;
+  font-weight: 800;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: .1em;
+}
+
+.hint {
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  color: #1e40af;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.hint-warn { background: var(--warn-soft); border-color: #fde68a; color: var(--warn-ink); }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+/* ================================================================
+   MATCH CARDS
+================================================================ */
+.match-list, .session-matches { display: grid; gap: 10px; }
+.session-matches { margin-top: 14px; }
+
+.match-card { padding: 14px 16px; }
+
+.match-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.tag {
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  color: var(--green-800);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  letter-spacing: .02em;
+}
+
+.match-body {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.match-team .team-tag {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.align-right .team-tag { justify-content: flex-end; }
+
+.win-tag {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.match-team .team-players {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 2px;
+  font-size: 14.5px;
+}
+
+.align-right { text-align: right; }
+
+.match-team.is-winner .team-players { color: var(--green-800); }
+
+.match-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--line-md);
+  font-variant-numeric: tabular-nums;
+}
+
+.match-score .win { color: var(--green-600); }
+.score-sep { color: var(--line-md); }
+
+/* ================================================================
+   HISTORY — stat boxes
+================================================================ */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.stat-box {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border-top: 4px solid var(--green-600);
+}
+
+.stat-box-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--green-800);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-box-label {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ================================================================
+   SESSION CARDS (lịch sử)
+================================================================ */
+.session-list { display: grid; gap: 14px; }
+
+.session-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.session-head h3 { font-size: 16px; margin-bottom: 3px; }
+
+.session-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.session-stats li {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.session-stats .stat-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+}
+
+.session-stats .stat-value { font-size: 20px; }
+
+.session-participants { margin-bottom: 4px; }
+
+.session-participants .stat-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* ================================================================
+   SESSION CARD — clickable button variant
+================================================================ */
+.session-card-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s, transform .1s;
+}
+
+.session-card-btn:hover {
+  border-color: var(--green-500);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.session-head-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.session-match-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green-800);
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: 6px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+/* ================================================================
+   MODAL
+================================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .48);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .28);
+  width: 100%;
+  max-width: 660px;
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 20px 16px;
+  border-bottom: 1.5px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  z-index: 1;
+}
+
+.modal-head h3 { font-size: 17px; margin-bottom: 4px; }
+
+.modal-section {
+  padding: 16px 20px;
+  border-bottom: 1.5px solid var(--line);
+}
+
+.modal-section:last-child { border-bottom: none; }
+
+.modal-section .section-label { margin-bottom: 10px; }
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   FOOTER
+================================================================ */
+.footer {
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 13px;
+  padding: 16px 0;
+}
+
+.footer .content-inner { text-align: center; }
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+@media (max-width: 640px) {
+  .topbar-inner { padding-top: 12px; padding-bottom: 12px; }
+  .teams { grid-template-columns: 1fr; }
+  .vs { justify-self: center; }
+  .session-stats { grid-template-columns: 1fr 1fr; }
+  .tabs-status { display: none; }
+}
