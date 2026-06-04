@@ -30,8 +30,8 @@ export default function BrandMenu() {
             </>
           ) : (
             <>
-              <span className="brand-name">Câu lạc bộ cầu lông</span>
-              <div className="brand-sub">Đăng nhập ▾</div>
+              <span className="brand-name">Badminton Club</span>
+              <div className="brand-sub">Cùng nhau tiến bộ mỗi ngày ▾</div>
             </>
           )}
         </div>

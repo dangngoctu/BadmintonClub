@@ -137,3 +137,12 @@ export const IconWallet = (p) => (
     <path d="M16 12h5v4h-5a2 2 0 0 1 0-4z" />
   </Svg>
 )
+
+export const IconRanking = (p) => (
+  <Svg {...p}>
+    <rect x="3" y="12" width="4" height="9" rx="1" />
+    <rect x="10" y="7" width="4" height="14" rx="1" />
+    <rect x="17" y="3" width="4" height="18" rx="1" />
+    <path d="M5 9l3-3 3 3" />
+  </Svg>
+)

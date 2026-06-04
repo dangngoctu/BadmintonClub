@@ -2,7 +2,7 @@ import { useStore } from '../store/StoreContext.jsx'
 import { useAccounts } from '../store/AccountsContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
 import { activeSession, formatDateTime, formatDuration } from '../utils/helpers.js'
-import { IconCheck, IconPlus, IconLock, IconUnlock } from './Icons.jsx'
+import { IconCheck, IconLock, IconUnlock } from './Icons.jsx'
 
 export default function CourtsPanel() {
   const { data, actions } = useStore()
@@ -23,7 +23,14 @@ export default function CourtsPanel() {
 
       <div className="court-grid">
         {data.courts.map((court) => (
-          <CourtCard key={court.id} court={court} data={data} actions={actions} isAdmin={isAdmin} isLoggedIn={isLoggedIn} />
+          <CourtCard
+            key={court.id}
+            court={court}
+            data={data}
+            actions={actions}
+            isAdmin={isAdmin}
+            isLoggedIn={isLoggedIn}
+          />
         ))}
       </div>
     </section>
@@ -41,58 +48,74 @@ function CourtCard({ court, data, actions, isAdmin, isLoggedIn }) {
     <div className={`card court-card ${isOpen ? 'is-open' : 'is-closed'}`}>
       <div className="court-card-stripe" />
       <div className="court-card-body">
-      <div className="court-card-top">
-        <h3>{court.name}</h3>
-        <span className={`badge ${isOpen ? 'badge-open' : 'badge-closed'}`}>
-          <span className="dot" />
-          {isOpen ? 'Đang mở' : 'Đã đóng'}
-        </span>
-      </div>
+        <div className="court-card-top">
+          <h3>{court.name}</h3>
+          <span className={`badge ${isOpen ? 'badge-open' : 'badge-closed'}`}>
+            <span className="dot" />
+            {isOpen ? 'Đang mở' : 'Đã đóng'}
+          </span>
+        </div>
 
-      {isOpen ? (
-        <>
-          <ul className="court-stats">
-            <li>
-              <span className="stat-label">Mở lúc</span>
-              <span className="stat-value">{formatDateTime(session.openedAt)}</span>
-            </li>
-            <li>
-              <span className="stat-label">Thời gian mở</span>
-              <span className="stat-value">{formatDuration(session.openedAt)}</span>
-            </li>
-            <li>
-              <span className="stat-label">Người tham gia</span>
-              <span className="stat-value">{session.participantIds.length}</span>
-            </li>
-            <li>
-              <span className="stat-label">Số trận đã đấu</span>
-              <span className="stat-value">{matchCount}</span>
-            </li>
-          </ul>
+        {isOpen ? (
+          <>
+            {/* Mini stat cards */}
+            <div className="court-mini-stats">
+              <div className="court-mini-stat">
+                <span className="mini-stat-icon">⏰</span>
+                <span className="mini-stat-value">{formatDateTime(session.openedAt).split(' ')[1] ?? formatDateTime(session.openedAt)}</span>
+                <span className="mini-stat-label">Mở lúc</span>
+              </div>
+              <div className="court-mini-stat">
+                <span className="mini-stat-icon">👥</span>
+                <span className="mini-stat-value">{session.participantIds.length}</span>
+                <span className="mini-stat-label">Tham gia</span>
+              </div>
+              <div className="court-mini-stat">
+                <span className="mini-stat-icon">🏸</span>
+                <span className="mini-stat-value">{matchCount}</span>
+                <span className="mini-stat-label">Trận đấu</span>
+              </div>
+            </div>
 
-          <Participants session={session} actions={actions} isLoggedIn={isLoggedIn} />
+            <Participants session={session} actions={actions} isLoggedIn={isLoggedIn} />
 
-          {isAdmin && (
-            <button className="btn btn-danger btn-block" onClick={() => actions.closeCourt(court.id)}>
-              <IconLock size={16} /> Đóng sân &amp; lưu lịch sử
-            </button>
-          )}
-        </>
-      ) : (
-        <>
-          <p className="muted court-empty">
-            {isAdmin ? 'Sân đang đóng. Mở sân để bắt đầu nhận đăng ký.' : 'Sân chưa mở.'}
-          </p>
-          {isAdmin && (
-            <button className="btn btn-primary btn-block" onClick={() => actions.openCourt(court.id)}>
-              <IconUnlock size={16} /> Mở sân
-            </button>
-          )}
-        </>
-      )}
+            {isAdmin && (
+              <button
+                className="btn btn-danger btn-block"
+                onClick={() => actions.closeCourt(court.id)}
+              >
+                <IconLock size={16} /> Đóng sân &amp; lưu lịch sử
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            <p className="muted court-empty">
+              {isAdmin ? 'Sân đang đóng. Mở sân để bắt đầu nhận đăng ký.' : 'Sân chưa mở.'}
+            </p>
+            {isAdmin && (
+              <button
+                className="btn btn-primary btn-block"
+                onClick={() => actions.openCourt(court.id)}
+              >
+                <IconUnlock size={16} /> Mở sân
+              </button>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
+}
+
+function initials(name) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
 }
 
 function Participants({ session, actions, isLoggedIn }) {
@@ -112,7 +135,6 @@ function Participants({ session, actions, isLoggedIn }) {
         {accounts.map((a) => {
           const joined = joinedIds.has(a.id)
           const isSelf = currentUser?.id === a.id
-          // Admin: toggle bất kỳ ai. Guest: chỉ toggle chính mình.
           const canToggle = isLoggedIn && (isAdmin || isSelf)
           return (
             <button
@@ -130,7 +152,9 @@ function Participants({ session, actions, isLoggedIn }) {
                   : 'Bấm để đăng ký tham gia'
               }
             >
-              {joined ? <IconCheck size={14} /> : <IconPlus size={14} />}
+              <span className="chip-avatar">
+                {joined ? <IconCheck size={13} /> : initials(a.name)}
+              </span>
               {a.name}
             </button>
           )

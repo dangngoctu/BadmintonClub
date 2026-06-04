@@ -2,8 +2,15 @@
   {
     "id": "acc-default-admin",
     "name": "DangTu",
-    "password": "theb123",
+    "password": "Tu123",
     "role": "admin",
     "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "acc-mpz89rg4i3vq",
+    "name": "LongNguyen",
+    "password": "rcvn123456",
+    "role": "guest",
+    "createdAt": "2026-06-04T08:22:57.076Z"
   }
 ]

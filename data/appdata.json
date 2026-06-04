@@ -9,7 +9,16 @@
       "name": "Sân 2"
     }
   ],
-  "sessions": [],
+  "sessions": [
+    {
+      "id": "f5ece44a-ffa7-4ce7-8cc0-97ffa4dc6819",
+      "courtId": "court-1",
+      "status": "closed",
+      "openedAt": "2026-06-04T08:23:23.648Z",
+      "closedAt": "2026-06-04T09:52:18.585Z",
+      "participantIds": []
+    }
+  ],
   "matches": [],
   "finance": {
     "openingBalance": 0,

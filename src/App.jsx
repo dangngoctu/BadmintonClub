@@ -8,6 +8,7 @@ import AccountsPanel from './components/AccountsPanel.jsx'
 import MatchesPanel from './components/MatchesPanel.jsx'
 import HistoryPanel from './components/HistoryPanel.jsx'
 import FinancePanel from './components/FinancePanel.jsx'
+import RankingPanel from './components/RankingPanel.jsx'
 import BrandMenu from './components/BrandMenu.jsx'
 import {
   IconCourt,
@@ -15,6 +16,7 @@ import {
   IconTrophy,
   IconClock,
   IconWallet,
+  IconRanking,
   IconDownload,
   IconUpload,
   IconTrash,
@@ -26,6 +28,7 @@ const TABS = [
   { id: 'matches', label: 'Trận đấu', Icon: IconTrophy },
   { id: 'history', label: 'Lịch sử', Icon: IconClock },
   { id: 'finance', label: 'Tài chính', Icon: IconWallet },
+  { id: 'ranking', label: 'Xếp hạng', Icon: IconRanking },
 ]
 
 export default function App() {
@@ -40,6 +43,9 @@ export default function App() {
   }
 
   const openCount = data.courts.filter((c) => activeSession(data.sessions, c.id)).length
+  const activePlayers = data.sessions
+    .filter((s) => s.status === 'active')
+    .reduce((sum, s) => sum + s.participantIds.length, 0)
 
   const handleExport = () => {
     const blob = new Blob([JSON.stringify({ ...data, accounts }, null, 2)], { type: 'application/json' })
@@ -82,6 +88,26 @@ export default function App() {
       <header className="topbar">
         <div className="topbar-inner">
           <BrandMenu />
+
+          {/* <div className="header-stats">
+            <div className="header-stat">
+              <span className="header-stat-icon">👥</span>
+              <span className="header-stat-num">{accounts.length}</span>
+              <span className="header-stat-label">Thành viên</span>
+            </div>
+            <div className="header-stat-sep" />
+            <div className="header-stat">
+              <span className="header-stat-icon">🏸</span>
+              <span className="header-stat-num">{data.matches.length}</span>
+              <span className="header-stat-label">Trận đấu</span>
+            </div>
+            <div className="header-stat-sep" />
+            <div className="header-stat">
+              <span className="header-stat-icon">🔥</span>
+              <span className="header-stat-num">{activePlayers}</span>
+              <span className="header-stat-label">Đang thi đấu</span>
+            </div>
+          </div> */}
 
           <div className="topbar-right">
             {isAdmin && (
@@ -133,6 +159,7 @@ export default function App() {
           {tab === 'matches' && <MatchesPanel />}
           {tab === 'history' && <HistoryPanel />}
           {tab === 'finance' && <FinancePanel />}
+          {tab === 'ranking' && <RankingPanel />}
         </div>
       </main>
 
