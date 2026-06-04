@@ -5,7 +5,7 @@ import { IconCheck, IconPlus, IconLock, IconUnlock } from './Icons.jsx'
 
 export default function CourtsPanel() {
   const { data, actions } = useStore()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isLoggedIn } = useAuth()
 
   return (
     <section>
@@ -20,14 +20,14 @@ export default function CourtsPanel() {
 
       <div className="court-grid">
         {data.courts.map((court) => (
-          <CourtCard key={court.id} court={court} data={data} actions={actions} isAdmin={isAdmin} />
+          <CourtCard key={court.id} court={court} data={data} actions={actions} isAdmin={isAdmin} isLoggedIn={isLoggedIn} />
         ))}
       </div>
     </section>
   )
 }
 
-function CourtCard({ court, data, actions, isAdmin }) {
+function CourtCard({ court, data, actions, isAdmin, isLoggedIn }) {
   const session = activeSession(data.sessions, court.id)
   const isOpen = Boolean(session)
   const matchCount = session
@@ -67,7 +67,7 @@ function CourtCard({ court, data, actions, isAdmin }) {
             </li>
           </ul>
 
-          <Participants session={session} data={data} actions={actions} />
+          <Participants session={session} data={data} actions={actions} isLoggedIn={isLoggedIn} />
 
           {isAdmin && (
             <button className="btn btn-danger btn-block" onClick={() => actions.closeCourt(court.id)}>
@@ -92,7 +92,7 @@ function CourtCard({ court, data, actions, isAdmin }) {
   )
 }
 
-function Participants({ session, data, actions }) {
+function Participants({ session, data, actions, isLoggedIn }) {
   const joinedIds = new Set(session.participantIds)
 
   return (
@@ -110,8 +110,15 @@ function Participants({ session, data, actions }) {
             <button
               key={a.id}
               className={`chip ${joined ? 'chip-on' : ''}`}
+              disabled={!isLoggedIn}
               onClick={() => actions.setParticipant(session.id, a.id, !joined)}
-              title={joined ? 'Bấm để bỏ đăng ký' : 'Bấm để đăng ký tham gia'}
+              title={
+                !isLoggedIn
+                  ? 'Đăng nhập để đăng ký tham gia'
+                  : joined
+                  ? 'Bấm để bỏ đăng ký'
+                  : 'Bấm để đăng ký tham gia'
+              }
             >
               {joined ? <IconCheck size={14} /> : <IconPlus size={14} />}
               {a.name}

@@ -6,9 +6,8 @@ import CourtsPanel from './components/CourtsPanel.jsx'
 import AccountsPanel from './components/AccountsPanel.jsx'
 import MatchesPanel from './components/MatchesPanel.jsx'
 import HistoryPanel from './components/HistoryPanel.jsx'
-import LoginScreen from './components/LoginScreen.jsx'
+import BrandMenu from './components/BrandMenu.jsx'
 import {
-  IconShuttle,
   IconCourt,
   IconUsers,
   IconTrophy,
@@ -16,7 +15,6 @@ import {
   IconDownload,
   IconUpload,
   IconTrash,
-  IconLock,
 } from './components/Icons.jsx'
 
 const TABS = [
@@ -28,13 +26,9 @@ const TABS = [
 
 export default function App() {
   const { data, actions } = useStore()
-  const { currentUser, isAdmin, isLoggedIn, logout } = useAuth()
+  const { isAdmin, isLoggedIn } = useAuth()
   const [tab, setTab] = useState('courts')
   const fileInputRef = useRef(null)
-
-  if (!isLoggedIn) {
-    return <LoginScreen />
-  }
 
   const openCount = data.courts.filter((c) => activeSession(data.sessions, c.id)).length
 
@@ -67,26 +61,16 @@ export default function App() {
   const handleReset = () => {
     if (confirm('Xoá toàn bộ dữ liệu và đưa về trạng thái ban đầu? Hành động này không thể hoàn tác.')) {
       actions.resetData()
-      logout()
     }
   }
 
-  const roleBadge = isAdmin ? 'Admin' : 'Guest'
   const statusText = openCount > 0 ? `${openCount} sân đang mở` : 'Tất cả sân đang đóng'
 
   return (
     <div className="app">
       <header className="topbar">
         <div className="topbar-inner">
-          <div className="brand">
-            <span className="brand-mark">
-              <IconShuttle size={22} />
-            </span>
-            <div>
-              <span className="brand-name">Câu lạc bộ cầu lông</span>
-              <div className="brand-sub">Court Management</div>
-            </div>
-          </div>
+          <BrandMenu />
 
           <div className="topbar-right">
             {isAdmin && (
@@ -109,16 +93,6 @@ export default function App() {
                 />
               </div>
             )}
-
-            <div className="user-pill">
-              <span className="user-pill-name">{currentUser.name}</span>
-              <span className={`user-pill-role ${isAdmin ? 'role-admin' : 'role-guest'}`}>
-                {roleBadge}
-              </span>
-              <button className="user-pill-logout" onClick={logout} title="Đăng xuất">
-                <IconLock size={14} />
-              </button>
-            </div>
           </div>
         </div>
 
@@ -154,7 +128,9 @@ export default function App() {
         <div className="content-inner">
           {isAdmin
             ? <>Chế độ quản trị. Dùng <b>Xuất JSON</b> để sao lưu dữ liệu.</>
-            : `Đăng nhập với quyền ${roleBadge}. Có thể đăng ký sân và ghi kết quả trận đấu.`}
+            : isLoggedIn
+              ? 'Đã đăng nhập. Có thể đăng ký sân và ghi kết quả trận đấu.'
+              : 'Đang xem với quyền khách. Nhấn tên câu lạc bộ góc trên bên trái để đăng nhập.'}
         </div>
       </footer>
     </div>

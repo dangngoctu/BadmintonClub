@@ -25,10 +25,10 @@ export function AuthProvider({ children }) {
     setCurrentUser(null)
   }
 
-  // Đồng bộ role khi admin đổi quyền tài khoản đang đăng nhập.
-  const syncRole = (role) => {
+  // Đồng bộ thông tin session khi tài khoản được cập nhật.
+  const syncUser = (changes) => {
     if (!currentUser) return
-    const updated = { ...currentUser, role }
+    const updated = { ...currentUser, ...changes }
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(updated))
     setCurrentUser(updated)
   }
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
   const isLoggedIn = currentUser !== null
 
   return (
-    <AuthContext.Provider value={{ currentUser, isAdmin, isLoggedIn, login, logout, syncRole }}>
+    <AuthContext.Provider value={{ currentUser, isAdmin, isLoggedIn, login, logout, syncUser }}>
       {children}
     </AuthContext.Provider>
   )
