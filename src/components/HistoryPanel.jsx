@@ -33,7 +33,7 @@ export default function HistoryPanel() {
         <StatBox value={data.sessions.length} label="Lượt mở sân" />
         <StatBox value={data.matches.length} label="Trận đã đấu" />
         <StatBox value={totalParticipations} label="Lượt tham gia" />
-        <StatBox value={data.players.length} label="Người chơi" />
+        <StatBox value={data.accounts.length} label="Người chơi" />
       </div>
 
       {sessions.length === 0 ? (
@@ -117,7 +117,7 @@ function SessionCard({ session, data, matchCount, onClick }) {
           <div className="chip-list" style={{ marginTop: 8 }}>
             {session.participantIds.map((id) => (
               <span key={id} className="chip chip-static">
-                {playerName(data.players, id)}
+                {playerName(data.accounts, id)}
               </span>
             ))}
           </div>
@@ -163,7 +163,7 @@ function SessionModal({ session, data, onClose }) {
             <div className="chip-list">
               {session.participantIds.map((id) => (
                 <span key={id} className="chip chip-static">
-                  {playerName(data.players, id)}
+                  {playerName(data.accounts, id)}
                 </span>
               ))}
             </div>

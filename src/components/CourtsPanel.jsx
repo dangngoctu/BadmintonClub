@@ -99,22 +99,22 @@ function Participants({ session, data, actions }) {
     <div className="participants">
       <div className="participants-head">
         <h4>Đăng ký tham gia</h4>
-        {data.players.length === 0 && (
-          <span className="muted small">Chưa có người chơi — admin thêm ở tab "Người chơi".</span>
+        {data.accounts.length === 0 && (
+          <span className="muted small">Chưa có thành viên — admin thêm ở tab "Thành viên".</span>
         )}
       </div>
       <div className="chip-list">
-        {data.players.map((p) => {
-          const joined = joinedIds.has(p.id)
+        {data.accounts.map((a) => {
+          const joined = joinedIds.has(a.id)
           return (
             <button
-              key={p.id}
+              key={a.id}
               className={`chip ${joined ? 'chip-on' : ''}`}
-              onClick={() => actions.setParticipant(session.id, p.id, !joined)}
+              onClick={() => actions.setParticipant(session.id, a.id, !joined)}
               title={joined ? 'Bấm để bỏ đăng ký' : 'Bấm để đăng ký tham gia'}
             >
               {joined ? <IconCheck size={14} /> : <IconPlus size={14} />}
-              {p.name}
+              {a.name}
             </button>
           )
         })}

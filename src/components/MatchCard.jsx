@@ -28,7 +28,7 @@ export default function MatchCard({ match, data, onRemove }) {
           </div>
           <div className="team-players">
             {teamA.map((id) => (
-              <span key={id}>{playerName(data.players, id)}</span>
+              <span key={id}>{playerName(data.accounts, id)}</span>
             ))}
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function MatchCard({ match, data, onRemove }) {
           </div>
           <div className="team-players">
             {teamB.map((id) => (
-              <span key={id}>{playerName(data.players, id)}</span>
+              <span key={id}>{playerName(data.accounts, id)}</span>
             ))}
           </div>
         </div>

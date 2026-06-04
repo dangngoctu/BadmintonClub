@@ -1,33 +1,43 @@
-import { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
-
-const SESSION_KEY = 'badminton-admin-session'
-
-function check(pw) {
-  return pw === 'Tu0937348540'
-}
+const SESSION_KEY = 'badminton-session-v2'
 
 export function AuthProvider({ children }) {
-  const [isAdmin, setIsAdmin] = useState(() => {
-    // Giữ trạng thái admin qua reload trong phiên trình duyệt (sessionStorage).
-    return sessionStorage.getItem(SESSION_KEY) === '1'
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const s = sessionStorage.getItem(SESSION_KEY)
+      return s ? JSON.parse(s) : null
+    } catch {
+      return null
+    }
   })
 
-  const login = useCallback((pw) => {
-    if (!check(pw)) return false
-    sessionStorage.setItem(SESSION_KEY, '1')
-    setIsAdmin(true)
-    return true
-  }, [])
+  // Gọi sau khi đã xác thực mật khẩu ở phía component.
+  const login = (user) => {
+    const payload = { id: user.id, name: user.name, role: user.role }
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(payload))
+    setCurrentUser(payload)
+  }
 
-  const logout = useCallback(() => {
+  const logout = () => {
     sessionStorage.removeItem(SESSION_KEY)
-    setIsAdmin(false)
-  }, [])
+    setCurrentUser(null)
+  }
+
+  // Đồng bộ role khi admin đổi quyền tài khoản đang đăng nhập.
+  const syncRole = (role) => {
+    if (!currentUser) return
+    const updated = { ...currentUser, role }
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(updated))
+    setCurrentUser(updated)
+  }
+
+  const isAdmin = currentUser?.role === 'admin'
+  const isLoggedIn = currentUser !== null
 
   return (
-    <AuthContext.Provider value={{ isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, isAdmin, isLoggedIn, login, logout, syncRole }}>
       {children}
     </AuthContext.Provider>
   )

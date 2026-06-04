@@ -3,7 +3,6 @@ import { defaultData, loadData, saveData, normalize } from './storage.js'
 
 const StoreContext = createContext(null)
 
-// Sinh id ngắn gọn, ổn định.
 function uid() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID()
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
@@ -12,39 +11,40 @@ function uid() {
 export function StoreProvider({ children }) {
   const [data, setData] = useState(loadData)
 
-  // Tự động lưu mỗi khi dữ liệu thay đổi.
   useEffect(() => {
     saveData(data)
   }, [data])
 
   const actions = useMemo(() => {
-    // ---- Người chơi ----
-    const addPlayer = (name) => {
+    // ---- Tài khoản thành viên ----
+    const addAccount = (name, role = 'guest', password = 'theb123') => {
       const trimmed = name.trim()
       if (!trimmed) return
       setData((d) => ({
         ...d,
-        players: [...d.players, { id: uid(), name: trimmed, createdAt: new Date().toISOString() }],
+        accounts: [
+          ...d.accounts,
+          { id: uid(), name: trimmed, password, role, createdAt: new Date().toISOString() },
+        ],
       }))
     }
 
-    const renamePlayer = (playerId, name) => {
-      const trimmed = name.trim()
-      if (!trimmed) return
+    const updateAccount = (accountId, changes) => {
       setData((d) => ({
         ...d,
-        players: d.players.map((p) => (p.id === playerId ? { ...p, name: trimmed } : p)),
+        accounts: d.accounts.map((a) =>
+          a.id === accountId ? { ...a, ...changes } : a,
+        ),
       }))
     }
 
-    const removePlayer = (playerId) => {
+    const removeAccount = (accountId) => {
       setData((d) => ({
         ...d,
-        players: d.players.filter((p) => p.id !== playerId),
-        // Gỡ khỏi danh sách tham gia của các phiên đang mở.
+        accounts: d.accounts.filter((a) => a.id !== accountId),
         sessions: d.sessions.map((s) =>
           s.status === 'active'
-            ? { ...s, participantIds: s.participantIds.filter((id) => id !== playerId) }
+            ? { ...s, participantIds: s.participantIds.filter((id) => id !== accountId) }
             : s,
         ),
       }))
@@ -55,15 +55,20 @@ export function StoreProvider({ children }) {
       setData((d) => {
         const alreadyOpen = d.sessions.some((s) => s.courtId === courtId && s.status === 'active')
         if (alreadyOpen) return d
-        const session = {
-          id: uid(),
-          courtId,
-          status: 'active',
-          openedAt: new Date().toISOString(),
-          closedAt: null,
-          participantIds: [],
+        return {
+          ...d,
+          sessions: [
+            ...d.sessions,
+            {
+              id: uid(),
+              courtId,
+              status: 'active',
+              openedAt: new Date().toISOString(),
+              closedAt: null,
+              participantIds: [],
+            },
+          ],
         }
-        return { ...d, sessions: [...d.sessions, session] }
       })
     }
 
@@ -78,15 +83,15 @@ export function StoreProvider({ children }) {
       }))
     }
 
-    const setParticipant = (sessionId, playerId, joined) => {
+    const setParticipant = (sessionId, accountId, joined) => {
       setData((d) => ({
         ...d,
         sessions: d.sessions.map((s) => {
           if (s.id !== sessionId) return s
-          const has = s.participantIds.includes(playerId)
-          if (joined && !has) return { ...s, participantIds: [...s.participantIds, playerId] }
+          const has = s.participantIds.includes(accountId)
+          if (joined && !has) return { ...s, participantIds: [...s.participantIds, accountId] }
           if (!joined && has)
-            return { ...s, participantIds: s.participantIds.filter((id) => id !== playerId) }
+            return { ...s, participantIds: s.participantIds.filter((id) => id !== accountId) }
           return s
         }),
       }))
@@ -122,9 +127,9 @@ export function StoreProvider({ children }) {
     const resetData = () => setData(defaultData())
 
     return {
-      addPlayer,
-      renamePlayer,
-      removePlayer,
+      addAccount,
+      updateAccount,
+      removeAccount,
       openCourt,
       closeCourt,
       setParticipant,

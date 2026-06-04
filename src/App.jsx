@@ -3,9 +3,10 @@ import { useStore } from './store/StoreContext.jsx'
 import { useAuth } from './store/AuthContext.jsx'
 import { activeSession } from './utils/helpers.js'
 import CourtsPanel from './components/CourtsPanel.jsx'
-import PlayersPanel from './components/PlayersPanel.jsx'
+import AccountsPanel from './components/AccountsPanel.jsx'
 import MatchesPanel from './components/MatchesPanel.jsx'
 import HistoryPanel from './components/HistoryPanel.jsx'
+import LoginScreen from './components/LoginScreen.jsx'
 import {
   IconShuttle,
   IconCourt,
@@ -16,21 +17,24 @@ import {
   IconUpload,
   IconTrash,
   IconLock,
-  IconUnlock,
 } from './components/Icons.jsx'
 
 const TABS = [
   { id: 'courts', label: 'Quản lý sân', Icon: IconCourt },
-  { id: 'players', label: 'Người chơi', Icon: IconUsers },
+  { id: 'accounts', label: 'Thành viên', Icon: IconUsers },
   { id: 'matches', label: 'Trận đấu', Icon: IconTrophy },
   { id: 'history', label: 'Lịch sử', Icon: IconClock },
 ]
 
 export default function App() {
   const { data, actions } = useStore()
-  const { isAdmin, login, logout } = useAuth()
+  const { currentUser, isAdmin, isLoggedIn, logout } = useAuth()
   const [tab, setTab] = useState('courts')
   const fileInputRef = useRef(null)
+
+  if (!isLoggedIn) {
+    return <LoginScreen />
+  }
 
   const openCount = data.courts.filter((c) => activeSession(data.sessions, c.id)).length
 
@@ -38,9 +42,8 @@ export default function App() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    const stamp = new Date().toISOString().slice(0, 10)
     a.href = url
-    a.download = `san-cau-long-${stamp}.json`
+    a.download = `san-cau-long-${new Date().toISOString().slice(0, 10)}.json`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -51,8 +54,7 @@ export default function App() {
     const reader = new FileReader()
     reader.onload = () => {
       try {
-        const parsed = JSON.parse(reader.result)
-        actions.importData(parsed)
+        actions.importData(JSON.parse(reader.result))
         alert('Đã nhập dữ liệu thành công.')
       } catch {
         alert('File JSON không hợp lệ.')
@@ -65,24 +67,12 @@ export default function App() {
   const handleReset = () => {
     if (confirm('Xoá toàn bộ dữ liệu và đưa về trạng thái ban đầu? Hành động này không thể hoàn tác.')) {
       actions.resetData()
-    }
-  }
-
-  const handleAdminToggle = () => {
-    if (isAdmin) {
       logout()
-      return
-    }
-    const pw = prompt('Nhập mật khẩu quản trị:')
-    if (pw === null) return
-    if (!login(pw)) {
-      alert('Mật khẩu không đúng.')
     }
   }
 
-  const statusText =
-    (openCount > 0 ? `${openCount} sân đang mở` : 'Tất cả sân đang đóng') +
-    ` · ${data.players.length} người chơi`
+  const roleBadge = isAdmin ? 'Admin' : 'Guest'
+  const statusText = openCount > 0 ? `${openCount} sân đang mở` : 'Tất cả sân đang đóng'
 
   return (
     <div className="app">
@@ -101,21 +91,13 @@ export default function App() {
           <div className="topbar-right">
             {isAdmin && (
               <div className="topbar-actions">
-                <button className="btn-topbar" onClick={handleExport} title="Tải dữ liệu về dạng file .json">
+                <button className="btn-topbar" onClick={handleExport}>
                   <IconDownload size={15} /> Xuất JSON
                 </button>
-                <button
-                  className="btn-topbar"
-                  onClick={() => fileInputRef.current?.click()}
-                  title="Nạp dữ liệu từ file .json đã sao lưu"
-                >
+                <button className="btn-topbar" onClick={() => fileInputRef.current?.click()}>
                   <IconUpload size={15} /> Nhập JSON
                 </button>
-                <button
-                  className="btn-topbar danger"
-                  onClick={handleReset}
-                  title="Xoá toàn bộ dữ liệu"
-                >
+                <button className="btn-topbar danger" onClick={handleReset}>
                   <IconTrash size={15} /> Xoá hết
                 </button>
                 <input
@@ -128,14 +110,15 @@ export default function App() {
               </div>
             )}
 
-            <button
-              className={`btn-admin ${isAdmin ? 'is-admin' : ''}`}
-              onClick={handleAdminToggle}
-              title={isAdmin ? 'Đang ở chế độ quản trị — bấm để đăng xuất' : 'Đăng nhập quản trị'}
-            >
-              {isAdmin ? <IconUnlock size={16} /> : <IconLock size={16} />}
-              {isAdmin ? 'Admin' : 'Guest'}
-            </button>
+            <div className="user-pill">
+              <span className="user-pill-name">{currentUser.name}</span>
+              <span className={`user-pill-role ${isAdmin ? 'role-admin' : 'role-guest'}`}>
+                {roleBadge}
+              </span>
+              <button className="user-pill-logout" onClick={logout} title="Đăng xuất">
+                <IconLock size={14} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -161,7 +144,7 @@ export default function App() {
       <main className="content">
         <div className="content-inner">
           {tab === 'courts' && <CourtsPanel />}
-          {tab === 'players' && <PlayersPanel />}
+          {tab === 'accounts' && <AccountsPanel />}
           {tab === 'matches' && <MatchesPanel />}
           {tab === 'history' && <HistoryPanel />}
         </div>
@@ -170,8 +153,8 @@ export default function App() {
       <footer className="footer">
         <div className="content-inner">
           {isAdmin
-            ? <>Chế độ quản trị. Dùng <b>Xuất JSON</b> để sao lưu và <b>Nhập JSON</b> để khôi phục dữ liệu.</>
-            : 'Bạn đang xem với quyền khách. Chỉ có thể đăng ký tham gia sân đang mở.'}
+            ? <>Chế độ quản trị. Dùng <b>Xuất JSON</b> để sao lưu dữ liệu.</>
+            : `Đăng nhập với quyền ${roleBadge}. Có thể đăng ký sân và ghi kết quả trận đấu.`}
         </div>
       </footer>
     </div>

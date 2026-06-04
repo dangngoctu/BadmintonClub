@@ -13,7 +13,7 @@ function emptySlots() {
 
 export default function MatchesPanel() {
   const { data, actions } = useStore()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isLoggedIn } = useAuth()
 
   const openCourts = data.courts
     .map((c) => ({ court: c, session: activeSession(data.sessions, c.id) }))
@@ -30,8 +30,8 @@ export default function MatchesPanel() {
 
   const participants = useMemo(() => {
     if (!session) return []
-    return data.players.filter((p) => session.participantIds.includes(p.id))
-  }, [session, data.players])
+    return data.accounts.filter((a) => session.participantIds.includes(a.id))
+  }, [session, data.accounts])
 
   const n = SLOTS_NEEDED[format]
   const needed = n * 2 // tổng số người cần
@@ -85,13 +85,11 @@ export default function MatchesPanel() {
       <div className="panel-head">
         <h2>Trận đấu</h2>
         <p className="muted">
-          {isAdmin
-            ? 'Chọn thể thức, sân đang mở và người thi đấu rồi lưu kết quả.'
-            : 'Lịch sử các trận đấu đã diễn ra.'}
+          {'Chọn thể thức, sân đang mở và người thi đấu rồi lưu kết quả.'}
         </p>
       </div>
 
-      {isAdmin && (
+      {isLoggedIn && (
         openCourts.length === 0 ? (
           <p className="empty-state">
             Chưa có sân nào đang mở. Mở một sân ở tab "Quản lý sân" để tạo trận.
@@ -226,7 +224,7 @@ export default function MatchesPanel() {
         )
       )}
 
-      <div className="panel-head" style={{ marginTop: isAdmin ? 28 : 0 }}>
+      <div className="panel-head" style={{ marginTop: isLoggedIn ? 28 : 0 }}>
         <h3>Lịch sử trận đấu ({recentMatches.length})</h3>
       </div>
       {recentMatches.length === 0 ? (

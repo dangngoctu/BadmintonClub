@@ -947,6 +947,223 @@ h1, h2, h3, h4 {
 }
 
 /* ================================================================
+   LOGIN SCREEN
+================================================================ */
+.login-screen {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 32px 36px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 6px;
+}
+
+.login-brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--green-800);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.login-brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--green-900);
+  letter-spacing: -0.02em;
+}
+
+.login-brand-sub {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.login-divider {
+  height: 1.5px;
+  background: var(--line);
+  margin: 22px 0;
+}
+
+.login-title {
+  font-size: 19px;
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 0; }
+
+.login-error {
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 13px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  margin-bottom: 4px;
+}
+
+.login-hint {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.login-hint code {
+  background: var(--surface);
+  border: 1px solid var(--line-md);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-family: monospace;
+  color: var(--green-800);
+}
+
+/* ================================================================
+   USER PILL (topbar)
+================================================================ */
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1.5px solid rgba(255,255,255,.25);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,.1);
+}
+
+.user-pill-name {
+  padding: 6px 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.user-pill-role {
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+
+.user-pill-role.role-admin {
+  background: var(--green-600);
+  color: #fff;
+}
+
+.user-pill-role.role-guest {
+  background: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.8);
+}
+
+.user-pill-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.7);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+
+.user-pill-logout:hover {
+  background: rgba(255,255,255,.18);
+  color: #fff;
+}
+
+/* ================================================================
+   ACCOUNT / ROLE TAGS (trong danh sách thành viên)
+================================================================ */
+.role-tag {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  flex-shrink: 0;
+}
+
+.role-tag.role-admin {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.role-tag.role-guest {
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--line-md);
+}
+
+.self-tag {
+  display: inline-block;
+  margin-left: 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  vertical-align: middle;
+}
+
+.player-row-self {
+  border-color: var(--green-200);
+  background: var(--green-50);
+}
+
+/* Form thêm tài khoản */
+.add-account-form {
+  margin-bottom: 4px;
+}
+
+.add-account-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ================================================================
    SESSION CARD — clickable button variant
 ================================================================ */
 .session-card-btn {

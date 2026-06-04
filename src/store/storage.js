@@ -1,14 +1,14 @@
 // Lớp truy cập localStorage + dữ liệu khởi tạo mặc định.
-
-export const STORAGE_KEY = 'badminton-data-v1'
-
-// Mô hình dữ liệu:
+//
+// Mô hình dữ liệu v2:
 // {
 //   courts:   [{ id, name }]
-//   players:  [{ id, name, createdAt }]
+//   accounts: [{ id, name, password, role: 'admin'|'guest', createdAt }]
 //   sessions: [{ id, courtId, status: 'active'|'closed', openedAt, closedAt, participantIds: [] }]
-//   matches:  [{ id, sessionId, courtId, teamA: [id,id], teamB: [id,id], scoreA, scoreB, playedAt }]
+//   matches:  [{ id, format, sessionId, courtId, teamA: [id], teamB: [id], scoreA, scoreB, playedAt }]
 // }
+
+export const STORAGE_KEY = 'badminton-data-v2'
 
 export function defaultData() {
   return {
@@ -16,21 +16,45 @@ export function defaultData() {
       { id: 'court-1', name: 'Sân 1' },
       { id: 'court-2', name: 'Sân 2' },
     ],
-    players: [],
+    accounts: [
+      {
+        id: 'acc-default-admin',
+        name: 'Admin',
+        password: 'theb123',
+        role: 'admin',
+        createdAt: new Date().toISOString(),
+      },
+    ],
     sessions: [],
     matches: [],
   }
 }
 
-// Bảo đảm dữ liệu đọc lên luôn có đủ các khoá cần thiết.
-function normalize(data) {
+function normalize(raw) {
   const base = defaultData()
-  if (!data || typeof data !== 'object') return base
+  if (!raw || typeof raw !== 'object') return base
+
+  // Migration: cũ dùng 'players', mới dùng 'accounts'
+  let accounts
+  if (Array.isArray(raw.accounts) && raw.accounts.length > 0) {
+    accounts = raw.accounts
+  } else if (Array.isArray(raw.players) && raw.players.length > 0) {
+    accounts = raw.players.map((p) => ({
+      id: p.id,
+      name: p.name,
+      password: 'theb123',
+      role: 'guest',
+      createdAt: p.createdAt || new Date().toISOString(),
+    }))
+  } else {
+    accounts = base.accounts
+  }
+
   return {
-    courts: Array.isArray(data.courts) && data.courts.length ? data.courts : base.courts,
-    players: Array.isArray(data.players) ? data.players : [],
-    sessions: Array.isArray(data.sessions) ? data.sessions : [],
-    matches: Array.isArray(data.matches) ? data.matches : [],
+    courts: Array.isArray(raw.courts) && raw.courts.length ? raw.courts : base.courts,
+    accounts,
+    sessions: Array.isArray(raw.sessions) ? raw.sessions : [],
+    matches: Array.isArray(raw.matches) ? raw.matches : [],
   }
 }
 
