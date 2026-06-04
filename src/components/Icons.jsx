@@ -130,3 +130,10 @@ export const IconUnlock = (p) => (
     <path d="M8 11V7a4 4 0 0 1 7.4-2" />
   </Svg>
 )
+
+export const IconWallet = (p) => (
+  <Svg {...p}>
+    <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3" />
+    <path d="M16 12h5v4h-5a2 2 0 0 1 0-4z" />
+  </Svg>
+)

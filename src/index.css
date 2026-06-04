@@ -39,7 +39,7 @@
   --radius-sm: 9px;
   --shadow:    0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,.09);
-  --maxw:      1060px;
+  --maxw:      1440px;
 }
 
 /* ---------- Reset ---------- */
@@ -1450,8 +1450,250 @@ h1, h2, h3, h4 {
 .footer .content-inner { text-align: center; }
 
 /* ================================================================
+   FINANCE PANEL
+================================================================ */
+.finance-layout {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.finance-summary { display: flex; flex-direction: column; gap: 16px; }
+
+.fin-summary-card {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.fin-summary-title {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+/* Totals table */
+.fin-totals-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.fin-totals-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.fin-totals-table td.fin-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.fin-totals-table tr:last-child td { border-bottom: none; }
+
+.fin-totals-table .fin-row-thu td { background: #f0fdf4; color: var(--green-800); }
+.fin-totals-table .fin-row-thieu td { background: #eff6ff; color: #1e40af; }
+.fin-totals-table .fin-row-chi td { background: #fffbeb; color: var(--warn-ink); }
+.fin-totals-table .fin-row-remaining td { background: var(--surface); font-size: 15px; }
+.fin-totals-table .fin-row-remaining.negative td { color: var(--danger); }
+
+.fin-balance-value {
+  display: inline-block;
+}
+.fin-balance-value.editable {
+  cursor: pointer;
+  border-bottom: 1.5px dashed var(--muted);
+  padding-bottom: 1px;
+}
+.fin-balance-edit { display: flex; align-items: center; gap: 8px; }
+.fin-balance-input {
+  width: 130px;
+  flex: none;
+  text-align: right;
+}
+
+/* Monthly table */
+.fin-monthly-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.fin-monthly-table th {
+  padding: 7px 7px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.fin-monthly-table th:first-child { text-align: center; }
+
+.fin-monthly-table td {
+  padding: 6px 7px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
+}
+
+.fin-monthly-table td:first-child { text-align: center; font-weight: 600; color: var(--ink-soft); }
+.fin-monthly-table tr:last-child td { border-bottom: none; }
+
+.fin-monthly-table .month-pos { background: #f0fdf4; }
+.fin-monthly-table .month-neg { background: #fff5f5; }
+.fin-monthly-table .month-empty td { color: var(--muted); }
+
+.fin-col-thieu { color: #1e40af; font-size: 12.5px; }
+
+.diff-pos { color: var(--green-700); font-weight: 700; }
+.diff-neg { color: var(--danger); font-weight: 700; }
+
+/* Entries panel */
+.finance-entries {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.fin-entries-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+
+.fin-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Table */
+.fin-table-wrap { overflow-x: auto; }
+
+.fin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.fin-table th {
+  padding: 9px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  border-bottom: 1.5px solid var(--line);
+  white-space: nowrap;
+}
+
+.fin-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.fin-table tr:last-child td { border-bottom: none; }
+
+.fin-table .fin-row-thu td { background: #f0fdf4; }
+.fin-table .fin-row-chi td { background: #fffbeb; }
+.fin-table .fin-row-thieu td { background: #eff6ff; }
+
+.fin-table .fin-row-thu:hover td { background: #dcfce7; }
+.fin-table .fin-row-chi:hover td { background: #fef9c3; }
+.fin-table .fin-row-thieu:hover td { background: #dbeafe; }
+
+.fin-date { white-space: nowrap; font-size: 13px; color: var(--ink-soft); }
+
+.fin-col-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fin-note { font-size: 13px; color: var(--ink-soft); white-space: pre-line; }
+
+.fin-type-badge {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.fin-type-thu {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.fin-type-chi {
+  background: #fef9c3;
+  color: #854d0e;
+  border: 1px solid #fde68a;
+}
+
+.fin-type-thu-thieu {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  white-space: nowrap;
+}
+
+.fin-purpose {
+  white-space: pre-line;
+  font-size: 13.5px;
+}
+
+
+.fin-actions {
+  white-space: nowrap;
+  text-align: right;
+  width: 60px;
+}
+
+.fin-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 16px;
+}
+
+/* Finance form */
+.fin-form { display: flex; flex-direction: column; gap: 14px; }
+
+/* ================================================================
    RESPONSIVE
 ================================================================ */
+@media (max-width: 900px) {
+  .finance-layout { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 640px) {
   .topbar-inner { padding-top: 12px; padding-bottom: 12px; }
   .teams { grid-template-columns: 1fr; }

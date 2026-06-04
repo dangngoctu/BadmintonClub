@@ -1,12 +1,3 @@
-// Lớp truy cập API server (Vite middleware ghi vào data/appdata.json).
-//
-// Mô hình dữ liệu:
-// {
-//   courts:   [{ id, name }]
-//   sessions: [{ id, courtId, status: 'active'|'closed', openedAt, closedAt, participantIds: [] }]
-//   matches:  [{ id, format, sessionId, courtId, teamA: [id], teamB: [id], scoreA, scoreB, playedAt }]
-// }
-
 const API = '/api/appdata'
 
 export function defaultData() {
@@ -17,16 +8,25 @@ export function defaultData() {
     ],
     sessions: [],
     matches: [],
+    finance: {
+      openingBalance: 0,
+      entries: [],
+    },
   }
 }
 
 function normalize(raw) {
   const base = defaultData()
   if (!raw || typeof raw !== 'object') return base
+  const rawFin = raw.finance && typeof raw.finance === 'object' ? raw.finance : {}
   return {
     courts: Array.isArray(raw.courts) && raw.courts.length ? raw.courts : base.courts,
     sessions: Array.isArray(raw.sessions) ? raw.sessions : [],
     matches: Array.isArray(raw.matches) ? raw.matches : [],
+    finance: {
+      openingBalance: typeof rawFin.openingBalance === 'number' ? rawFin.openingBalance : 0,
+      entries: Array.isArray(rawFin.entries) ? rawFin.entries : [],
+    },
   }
 }
 

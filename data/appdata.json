@@ -1,8 +1,299 @@
 {
   "courts": [
-    { "id": "court-1", "name": "Sân 1" },
-    { "id": "court-2", "name": "Sân 2" }
+    {
+      "id": "court-1",
+      "name": "Sân 1"
+    },
+    {
+      "id": "court-2",
+      "name": "Sân 2"
+    }
   ],
   "sessions": [],
-  "matches": []
+  "matches": [],
+  "finance": {
+    "openingBalance": 0,
+    "entries": [
+      {
+        "id": "fin-001",
+        "date": "2026-01-01",
+        "type": "chi",
+        "purpose": "Tiền sân (4 buổi)",
+        "amount": 1360000,
+        "note": ""
+      },
+      {
+        "id": "fin-002",
+        "date": "2026-01-06",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 450000,
+        "note": "Trinh, Trúc Anh, Tài, Phương, Tuấn, Quốc, Vinh, Tú"
+      },
+      {
+        "id": "fin-003",
+        "date": "2026-01-13",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 295000,
+        "note": ""
+      },
+      {
+        "id": "fin-004",
+        "date": "2026-01-13",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 510000,
+        "note": "Hằng, Hoài, Trinh, aLong, Vinh, Hùng, Quốc, Tú, Lê"
+      },
+      {
+        "id": "fin-005",
+        "date": "2026-01-16",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 60k\nNam 70k",
+        "amount": 530000,
+        "note": "Hằng, Hoài, Trinh, Tú, Hùng, Vinh, Quốc, Ân"
+      },
+      {
+        "id": "fin-006",
+        "date": "2026-01-20",
+        "type": "thu",
+        "purpose": "Tiền sân giải",
+        "amount": 680000,
+        "note": ""
+      },
+      {
+        "id": "fin-007",
+        "date": "2026-02-03",
+        "type": "chi",
+        "purpose": "Tiền sân tháng 2 (3 buổi)",
+        "amount": 1020000,
+        "note": ""
+      },
+      {
+        "id": "fin-008",
+        "date": "2026-02-03",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 350000,
+        "note": "aLong, Hoài, Tuấn, Quốc, Vinh, Ân, Tú, BIn"
+      },
+      {
+        "id": "fin-009",
+        "date": "2026-02-11",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 410000,
+        "note": "Tuấn, Bin, Ân, Hùng, Tú, TAnh, Vinh"
+      },
+      {
+        "id": "fin-010",
+        "date": "2026-02-24",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 295000,
+        "note": ""
+      },
+      {
+        "id": "fin-011",
+        "date": "2026-02-24",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 460000,
+        "note": "Trúc Anh, Trinh, Trí, Thức, Tú, Ân, a Tuấn, Vinh"
+      },
+      {
+        "id": "fin-012",
+        "date": "2026-03-04",
+        "type": "chi",
+        "purpose": "Tiền sân tháng 3 (5 buổi)",
+        "amount": 1700000,
+        "note": ""
+      },
+      {
+        "id": "fin-013",
+        "date": "2026-03-10",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 280000,
+        "note": "Trinh, Trúc Anh, Tú, Vinh, Ân, aLong"
+      },
+      {
+        "id": "fin-014",
+        "date": "2026-03-12",
+        "type": "thu",
+        "purpose": "a Long hỗ trợ",
+        "amount": 1000000,
+        "note": ""
+      },
+      {
+        "id": "fin-015",
+        "date": "2026-03-17",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 340000,
+        "note": "aLong, Trinh, TrúcAnh, Quốc, Ân, Vinh, Tú"
+      },
+      {
+        "id": "fin-016",
+        "date": "2026-03-17",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 295000,
+        "note": ""
+      },
+      {
+        "id": "fin-017",
+        "date": "2026-03-24",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 460000,
+        "note": "aLong, Trinh, Quỳnh, a Tuấn, Hùng, Ân, Lê, Tú, Vinh"
+      },
+      {
+        "id": "fin-018",
+        "date": "2026-03-31",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 295000,
+        "note": ""
+      },
+      {
+        "id": "fin-019",
+        "date": "2026-03-31",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 460000,
+        "note": "aLong, a Tuấn, Trinh, Trúc Anh, Lê, Ân, Tú, a Quốc, Vinh"
+      },
+      {
+        "id": "fin-020",
+        "date": "2026-04-01",
+        "type": "chi",
+        "purpose": "Tiền sân tháng 4 (4 buổi)",
+        "amount": 1360000,
+        "note": ""
+      },
+      {
+        "id": "fin-021",
+        "date": "2026-04-07",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 350000,
+        "note": "a Long, Trúc Anh, Tú, Ân, Vinh, Tuấn, Quốc\n( Ân)"
+      },
+      {
+        "id": "fin-022",
+        "date": "2026-04-14",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 240000,
+        "note": "a Quốc, a Tuấn, Vinh, Ân, Tú\n( Ân)\na Quốc, a Tuấn, Vinh (60k)\nÂn, Tú (30k)"
+      },
+      {
+        "id": "fin-023",
+        "date": "2026-04-14",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 295000,
+        "note": ""
+      },
+      {
+        "id": "fin-024",
+        "date": "2026-04-21",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 350000,
+        "note": "a Long, Trúc Anh, Tú, Ân, Vinh, Tuấn, Quốc\n( Ân)"
+      },
+      {
+        "id": "fin-025",
+        "date": "2026-04-24",
+        "type": "thu",
+        "purpose": "a Long hỗ trợ tháng 4",
+        "amount": 1000000,
+        "note": ""
+      },
+      {
+        "id": "fin-026",
+        "date": "2026-04-28",
+        "type": "thu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 290000,
+        "note": "a Long, Trúc Anh, Tú, Vinh, Tuấn"
+      },
+      {
+        "id": "fin-027",
+        "date": "2026-05-06",
+        "type": "chi",
+        "purpose": "Tiền sân",
+        "amount": 1020000,
+        "note": ""
+      },
+      {
+        "id": "fin-028",
+        "date": "2026-05-12",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 460000,
+        "note": "A Long, a Quốc, c Hằng, Trúc Anh, Tú, Vinh, Lê, Ân\n( Ân)"
+      },
+      {
+        "id": "fin-029",
+        "date": "2026-05-19",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 410000,
+        "note": "a Tuấn, a Quốc, Trúc Anh, Tú, Vinh, Ân, Bin\n(Ân)"
+      },
+      {
+        "id": "fin-030",
+        "date": "2026-05-26",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 360000,
+        "note": "a Long, a Tuấn, a Quốc, Tú, Vinh, Ân\n(Ân)"
+      },
+      {
+        "id": "fin-031",
+        "date": "2026-05-26",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 298000,
+        "note": ""
+      },
+      {
+        "id": "fin-032",
+        "date": "2026-05-26",
+        "type": "thu",
+        "purpose": "a Long hỗ trợ tháng 5",
+        "amount": 1000000,
+        "note": ""
+      },
+      {
+        "id": "fin-033",
+        "date": "2026-06-02",
+        "type": "chi",
+        "purpose": "Tiền sân (5 buổi)",
+        "amount": 1700000,
+        "note": ""
+      },
+      {
+        "id": "fin-034",
+        "date": "2026-06-02",
+        "type": "chi",
+        "purpose": "Tiền cầu",
+        "amount": 298000,
+        "note": ""
+      },
+      {
+        "id": "fin-035",
+        "date": "2026-06-02",
+        "type": "thu-thieu",
+        "purpose": "Tiền sân\nNữ 50k\nNam 60k",
+        "amount": 410000,
+        "note": "a Long, a Quốc, My, Tú, Vinh, Ân, Hùng\n( a Quốc, Vinh, Ân, Hùng)"
+      }
+    ]
+  }
 }

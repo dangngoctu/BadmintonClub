@@ -110,6 +110,43 @@ export function StoreProvider({ children }) {
       set((d) => ({ ...d, matches: d.matches.filter((m) => m.id !== matchId) }))
     }
 
+    // ---- Thu chi ----
+    const setOpeningBalance = (amount) => {
+      set((d) => ({ ...d, finance: { ...d.finance, openingBalance: Number(amount) || 0 } }))
+    }
+
+    const addFinanceEntry = ({ date, type, purpose, amount, note }) => {
+      set((d) => ({
+        ...d,
+        finance: {
+          ...d.finance,
+          entries: [
+            ...d.finance.entries,
+            { id: uid(), date, type, purpose, amount: Number(amount) || 0, note: note || '' },
+          ],
+        },
+      }))
+    }
+
+    const updateFinanceEntry = (id, fields) => {
+      set((d) => ({
+        ...d,
+        finance: {
+          ...d.finance,
+          entries: d.finance.entries.map((e) =>
+            e.id === id ? { ...e, ...fields, amount: Number(fields.amount ?? e.amount) || 0 } : e,
+          ),
+        },
+      }))
+    }
+
+    const removeFinanceEntry = (id) => {
+      set((d) => ({
+        ...d,
+        finance: { ...d.finance, entries: d.finance.entries.filter((e) => e.id !== id) },
+      }))
+    }
+
     // ---- Xuất / Nhập / Xoá toàn bộ ----
     const importData = (incoming) => set(normalize(incoming))
     const resetData = () => set(defaultData())
@@ -121,6 +158,10 @@ export function StoreProvider({ children }) {
       purgeParticipant,
       addMatch,
       removeMatch,
+      setOpeningBalance,
+      addFinanceEntry,
+      updateFinanceEntry,
+      removeFinanceEntry,
       importData,
       resetData,
     }

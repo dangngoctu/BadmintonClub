@@ -15,7 +15,9 @@ export default function CourtsPanel() {
         <p className="muted">
           {isAdmin
             ? 'Mở sân để cho đăng ký tham gia, đóng sân để lưu lại lịch sử.'
-            : 'Bấm vào tên của bạn để đăng ký tham gia sân đang mở.'}
+            : isLoggedIn
+            ? 'Bấm vào tên của bạn để đăng ký tham gia sân đang mở.'
+            : 'Đăng nhập để đăng ký tham gia sân.'}
         </p>
       </div>
 
@@ -95,6 +97,7 @@ function CourtCard({ court, data, actions, isAdmin, isLoggedIn }) {
 
 function Participants({ session, actions, isLoggedIn }) {
   const { accounts } = useAccounts()
+  const { currentUser, isAdmin } = useAuth()
   const joinedIds = new Set(session.participantIds)
 
   return (
@@ -108,15 +111,20 @@ function Participants({ session, actions, isLoggedIn }) {
       <div className="chip-list">
         {accounts.map((a) => {
           const joined = joinedIds.has(a.id)
+          const isSelf = currentUser?.id === a.id
+          // Admin: toggle bất kỳ ai. Guest: chỉ toggle chính mình.
+          const canToggle = isLoggedIn && (isAdmin || isSelf)
           return (
             <button
               key={a.id}
               className={`chip ${joined ? 'chip-on' : ''}`}
-              disabled={!isLoggedIn}
+              disabled={!canToggle}
               onClick={() => actions.setParticipant(session.id, a.id, !joined)}
               title={
                 !isLoggedIn
                   ? 'Đăng nhập để đăng ký tham gia'
+                  : !canToggle
+                  ? 'Bạn chỉ có thể đăng ký cho chính mình'
                   : joined
                   ? 'Bấm để bỏ đăng ký'
                   : 'Bấm để đăng ký tham gia'

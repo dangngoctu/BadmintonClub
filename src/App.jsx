@@ -7,12 +7,14 @@ import CourtsPanel from './components/CourtsPanel.jsx'
 import AccountsPanel from './components/AccountsPanel.jsx'
 import MatchesPanel from './components/MatchesPanel.jsx'
 import HistoryPanel from './components/HistoryPanel.jsx'
+import FinancePanel from './components/FinancePanel.jsx'
 import BrandMenu from './components/BrandMenu.jsx'
 import {
   IconCourt,
   IconUsers,
   IconTrophy,
   IconClock,
+  IconWallet,
   IconDownload,
   IconUpload,
   IconTrash,
@@ -23,6 +25,7 @@ const TABS = [
   { id: 'accounts', label: 'Thành viên', Icon: IconUsers },
   { id: 'matches', label: 'Trận đấu', Icon: IconTrophy },
   { id: 'history', label: 'Lịch sử', Icon: IconClock },
+  { id: 'finance', label: 'Tài chính', Icon: IconWallet },
 ]
 
 export default function App() {
@@ -129,6 +132,7 @@ export default function App() {
           {tab === 'accounts' && <AccountsPanel />}
           {tab === 'matches' && <MatchesPanel />}
           {tab === 'history' && <HistoryPanel />}
+          {tab === 'finance' && <FinancePanel />}
         </div>
       </main>
 
