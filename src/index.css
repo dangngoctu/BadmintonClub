@@ -126,7 +126,7 @@ h1, h2, h3, h4 {
    TOPBAR
 ================================================================ */
 .topbar {
-  background: linear-gradient(135deg, #064e24 0%, #0a6b31 50%, #0c7a3a 100%);
+  background: linear-gradient(135deg, #0f766e 0%, #0e7490 55%, #0891b2 100%);
   position: sticky;
   top: 0;
   z-index: 20;
@@ -1786,6 +1786,330 @@ h1, h2, h3, h4 {
 }
 
 /* ================================================================
+   COURT CARD (new design)
+================================================================ */
+.court-card-new {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
+  animation: fadeUp .3s ease both;
+}
+.court-card-new:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+/* Closed card */
+.closed-card-inner { display: flex; flex-direction: column; }
+.closed-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.court-icon { font-size: 28px; }
+.closed-card-name { font-size: 18px; font-weight: 700; }
+.closed-card-status { font-size: 13px; color: var(--muted); margin-top: 1px; }
+.closed-card-top .badge { margin-left: auto; }
+
+/* Session header */
+.session-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.session-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(90deg, #0f766e, #0891b2);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+
+.session-live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+.session-match-pill {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.session-card-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.session-card-date {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── Colored player chips ───────────────────────────────────── */
+.chip-player {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--line-md);
+  background: var(--panel);
+  color: var(--ink);
+  border-radius: 99px;
+  padding: 5px 12px 5px 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .15s ease;
+  white-space: nowrap;
+}
+.chip-player:hover:not(:disabled) {
+  border-color: var(--green-400);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+.chip-player:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
+
+/* Joined state: background color set via inline style */
+.chip-player-on {
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+
+.chip-player-animal {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,.25);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.chip-player:not(.chip-player-on) .chip-player-animal {
+  background: var(--surface);
+}
+
+.chip-player-name { line-height: 1; }
+
+.chip-player-check {
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(255,255,255,.3);
+  border-radius: 50%;
+  width: 18px; height: 18px;
+  display: grid; place-items: center;
+}
+
+/* ── Joined member list ─────────────────────────────────────── */
+.joined-list {
+  margin-top: 18px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.joined-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.joined-list-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+}
+
+.joined-list-count {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+  border-radius: 99px;
+  padding: 2px 10px;
+}
+
+.joined-list-items { display: grid; }
+
+.joined-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--line);
+  transition: background .1s ease;
+}
+.joined-item:last-child { border-bottom: none; }
+.joined-item:hover { background: var(--green-50); }
+
+.joined-item-avatar {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.joined-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.btn-absent {
+  background: none;
+  border: 1.5px solid var(--line-md);
+  border-radius: 7px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .12s ease;
+}
+.btn-absent:hover {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ================================================================
+   RANKING — new styles
+================================================================ */
+
+/* Award cards */
+.rank-awards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.rank-award-card {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  animation: fadeUp .3s ease both;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.rank-award-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.award-icon { font-size: 32px; line-height: 1; }
+.award-title { font-size: 14px; font-weight: 800; color: var(--ink); margin-top: 2px; }
+.award-subtitle { font-size: 11.5px; color: var(--muted); font-weight: 500; margin-bottom: 6px; }
+.award-avatar {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: grid; place-items: center;
+  font-size: 26px;
+}
+.award-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.award-stat {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 99px;
+  margin-top: 3px;
+}
+
+/* Player cell in table */
+.rank-player-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rank-player-avatar {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.rank-player-sub {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.rank-top3-avatar {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: grid; place-items: center;
+  font-size: 30px;
+  margin: 4px 0;
+}
+
+/* Form guide */
+.col-form { width: 140px; }
+
+.form-guide {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.form-badge {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  letter-spacing: 0;
+}
+
+.form-W {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.form-L {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.form-empty { color: var(--muted); font-size: 13px; }
+
+.my-rank-animal { font-size: 24px; margin-right: 4px; }
+
+/* ================================================================
    RESPONSIVE
 ================================================================ */
 @media (max-width: 900px) {
@@ -1801,8 +2125,11 @@ h1, h2, h3, h4 {
   .session-stats { grid-template-columns: 1fr 1fr; }
   .tabs-status { display: none; }
   .rank-top3 { grid-template-columns: 1fr; }
+  .rank-awards { grid-template-columns: 1fr; }
   .my-rank-body { flex-direction: column; align-items: flex-start; gap: 12px; }
   .my-rank-stats { margin-left: 0; gap: 16px; }
   .rank-club-stats { grid-template-columns: 1fr 1fr; }
   .court-mini-stats { grid-template-columns: repeat(3, 1fr); }
+  .col-form { display: none; }
+  .session-card-title { font-size: 16px; }
 }
