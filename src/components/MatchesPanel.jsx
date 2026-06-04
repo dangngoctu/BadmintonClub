@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useStore } from '../store/StoreContext.jsx'
+import { useAccounts } from '../store/AccountsContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
 import { activeSession, courtName } from '../utils/helpers.js'
 import MatchCard from './MatchCard.jsx'
 
-// Số slot cần điền cho mỗi đội theo thể thức
 const SLOTS_NEEDED = { '1v1': 1, '2v2': 2 }
 
 function emptySlots() {
@@ -13,6 +13,7 @@ function emptySlots() {
 
 export default function MatchesPanel() {
   const { data, actions } = useStore()
+  const { accounts } = useAccounts()
   const { isAdmin, isLoggedIn } = useAuth()
 
   const openCourts = data.courts
@@ -30,13 +31,12 @@ export default function MatchesPanel() {
 
   const participants = useMemo(() => {
     if (!session) return []
-    return data.accounts.filter((a) => session.participantIds.includes(a.id))
-  }, [session, data.accounts])
+    return accounts.filter((a) => session.participantIds.includes(a.id))
+  }, [session, accounts])
 
   const n = SLOTS_NEEDED[format]
-  const needed = n * 2 // tổng số người cần
+  const needed = n * 2
 
-  // Tập hợp slot đang dùng theo thể thức
   const activeSlotKeys = format === '1v1' ? ['a1', 'b1'] : ['a1', 'a2', 'b1', 'b2']
   const chosen = activeSlotKeys.map((k) => slots[k]).filter(Boolean)
   const allFilled = chosen.length === needed
@@ -97,7 +97,6 @@ export default function MatchesPanel() {
         ) : (
           <div className="card match-form">
 
-            {/* Hàng 1: thể thức + sân */}
             <div className="form-row-top">
               <div className="field" style={{ flex: 'none' }}>
                 <label>Thể thức</label>
@@ -131,7 +130,6 @@ export default function MatchesPanel() {
               </div>
             </div>
 
-            {/* Hàng 2: đội */}
             {participants.length < needed ? (
               <p className="hint">
                 Cần ít nhất <b>{needed} người</b> đã đăng ký ở{' '}
@@ -141,7 +139,6 @@ export default function MatchesPanel() {
             ) : (
               <>
                 <div className="teams">
-                  {/* Đội A */}
                   <div className="team team-a">
                     <h4>{format === '1v1' ? 'Người A' : 'Đội A'}</h4>
                     <SlotSelect
@@ -173,7 +170,6 @@ export default function MatchesPanel() {
 
                   <div className="vs">VS</div>
 
-                  {/* Đội B */}
                   <div className="team team-b">
                     <h4>{format === '1v1' ? 'Người B' : 'Đội B'}</h4>
                     <SlotSelect
@@ -235,7 +231,7 @@ export default function MatchesPanel() {
             <MatchCard
               key={m.id}
               match={m}
-              data={data}
+              courts={data.courts}
               onRemove={isAdmin ? () => actions.removeMatch(m.id) : null}
             />
           ))}

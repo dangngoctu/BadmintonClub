@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAccounts } from '../store/AccountsContext.jsx'
 import { useStore } from '../store/StoreContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
 import { IconPlus, IconPencil, IconTrash } from './Icons.jsx'
@@ -9,8 +10,9 @@ const ROLES = [
 ]
 
 export default function AccountsPanel() {
-  const { data, actions } = useStore()
-  const { isAdmin, currentUser, syncRole } = useAuth()
+  const { accounts, addAccount, updateAccount, removeAccount } = useAccounts()
+  const { actions: storeActions } = useStore()
+  const { isAdmin, currentUser, syncUser } = useAuth()
 
   const [name, setName] = useState('')
   const [role, setRole] = useState('guest')
@@ -20,7 +22,7 @@ export default function AccountsPanel() {
 
   const submit = (e) => {
     e.preventDefault()
-    actions.addAccount(name, role)
+    addAccount(name, role)
     setName('')
     setRole('guest')
   }
@@ -33,25 +35,25 @@ export default function AccountsPanel() {
 
   const saveEdit = (e) => {
     e.preventDefault()
-    actions.updateAccount(editingId, { name: editName.trim(), role: editRole })
-    // Nếu đang sửa tài khoản đang đăng nhập, đồng bộ role trong session.
-    if (editingId === currentUser?.id) syncRole(editRole)
+    updateAccount(editingId, { name: editName.trim(), role: editRole })
+    if (editingId === currentUser?.id) syncUser({ name: editName.trim(), role: editRole })
     setEditingId(null)
   }
 
   const resetPassword = (acc) => {
     if (confirm(`Đặt lại mật khẩu của "${acc.name}" về "theb123"?`)) {
-      actions.updateAccount(acc.id, { password: 'theb123' })
+      updateAccount(acc.id, { password: 'theb123' })
     }
   }
 
-  const removeAccount = (acc) => {
+  const handleRemove = (acc) => {
     if (acc.id === currentUser?.id) {
       alert('Không thể xoá tài khoản đang đăng nhập.')
       return
     }
     if (confirm(`Xoá tài khoản "${acc.name}"?`)) {
-      actions.removeAccount(acc.id)
+      removeAccount(acc.id)
+      storeActions.purgeParticipant(acc.id)
     }
   }
 
@@ -98,11 +100,11 @@ export default function AccountsPanel() {
         </form>
       )}
 
-      {data.accounts.length === 0 ? (
+      {accounts.length === 0 ? (
         <p className="empty-state">Chưa có tài khoản nào.</p>
       ) : (
         <ul className="player-list" style={{ marginTop: 16 }}>
-          {data.accounts.map((acc, i) => (
+          {accounts.map((acc, i) => (
             <li
               key={acc.id}
               className={`player-row ${acc.id === currentUser?.id ? 'player-row-self' : ''}`}
@@ -148,7 +150,7 @@ export default function AccountsPanel() {
                       <button className="btn-link" onClick={() => resetPassword(acc)}>
                         Reset PW
                       </button>
-                      <button className="btn-link danger" onClick={() => removeAccount(acc)}>
+                      <button className="btn-link danger" onClick={() => handleRemove(acc)}>
                         <IconTrash size={14} /> Xoá
                       </button>
                     </div>

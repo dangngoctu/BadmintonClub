@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useStore } from '../store/StoreContext.jsx'
+import { useAccounts } from '../store/AccountsContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
 import { IconShuttle } from './Icons.jsx'
 
 export default function BrandMenu() {
-  const { data, actions } = useStore()
+  const { accounts, updateAccount, registerAccount } = useAccounts()
   const { currentUser, isAdmin, isLoggedIn, login, logout, syncUser } = useAuth()
   const [open, setOpen] = useState(false)
   const [showUpdate, setShowUpdate] = useState(false)
@@ -49,7 +49,12 @@ export default function BrandMenu() {
                 onLogout={() => { close(); logout() }}
               />
             ) : (
-              <LoginForm data={data} login={login} onDone={close} />
+              <LoginForm
+                accounts={accounts}
+                login={login}
+                registerAccount={registerAccount}
+                onDone={close}
+              />
             )}
           </div>
         </>
@@ -58,8 +63,8 @@ export default function BrandMenu() {
       {showUpdate && (
         <UpdateModal
           currentUser={currentUser}
-          data={data}
-          actions={actions}
+          accounts={accounts}
+          updateAccount={updateAccount}
           syncUser={syncUser}
           onClose={() => setShowUpdate(false)}
         />
@@ -68,25 +73,103 @@ export default function BrandMenu() {
   )
 }
 
-function LoginForm({ data, login, onDone }) {
+function LoginForm({ accounts, login, registerAccount, onDone }) {
+  const [mode, setMode] = useState('login')
   const [selectedId, setSelectedId] = useState('')
   const [password, setPassword] = useState('')
+  const [regName, setRegName] = useState('')
+  const [regPw, setRegPw] = useState('')
+  const [regPwConfirm, setRegPwConfirm] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const switchMode = (next) => {
+    setMode(next)
+    setError('')
+  }
+
+  const handleLogin = (e) => {
     e.preventDefault()
     setError('')
-    const account = data.accounts.find((a) => a.id === selectedId)
+    const account = accounts.find((a) => a.id === selectedId)
     if (!account) { setError('Vui lòng chọn tài khoản.'); return }
     if (account.password !== password) { setError('Mật khẩu không đúng.'); return }
     login(account)
     onDone()
   }
 
+  const handleRegister = (e) => {
+    e.preventDefault()
+    setError('')
+    if (!regName.trim()) { setError('Vui lòng nhập tên.'); return }
+    if (!regPw) { setError('Vui lòng nhập mật khẩu.'); return }
+    if (regPw !== regPwConfirm) { setError('Mật khẩu xác nhận không khớp.'); return }
+    if (accounts.some((a) => a.name.toLowerCase() === regName.trim().toLowerCase())) {
+      setError('Tên này đã được sử dụng.'); return
+    }
+    const newAcc = registerAccount(regName.trim(), regPw)
+    login(newAcc)
+    onDone()
+  }
+
+  if (mode === 'register') {
+    return (
+      <div className="popover-body">
+        <div className="popover-title">Đăng ký tài khoản</div>
+        <form onSubmit={handleRegister}>
+          <div className="field">
+            <label>Họ tên</label>
+            <input
+              className="input"
+              placeholder="Tên của bạn…"
+              value={regName}
+              autoFocus
+              onChange={(e) => { setRegName(e.target.value); setError('') }}
+            />
+          </div>
+          <div className="field">
+            <label>Mật khẩu</label>
+            <input
+              className="input"
+              type="password"
+              placeholder="Đặt mật khẩu…"
+              value={regPw}
+              onChange={(e) => { setRegPw(e.target.value); setError('') }}
+            />
+          </div>
+          <div className="field">
+            <label>Xác nhận mật khẩu</label>
+            <input
+              className="input"
+              type="password"
+              placeholder="Nhập lại mật khẩu…"
+              value={regPwConfirm}
+              onChange={(e) => { setRegPwConfirm(e.target.value); setError('') }}
+            />
+          </div>
+          {error && <p className="popover-error">{error}</p>}
+          <button
+            className="btn btn-primary btn-block"
+            type="submit"
+            style={{ marginTop: 4 }}
+            disabled={!regName.trim() || !regPw || !regPwConfirm}
+          >
+            Đăng ký &amp; Đăng nhập
+          </button>
+        </form>
+        <p className="popover-hint">
+          Đã có tài khoản?{' '}
+          <button type="button" className="link-btn" onClick={() => switchMode('login')}>
+            Đăng nhập
+          </button>
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="popover-body">
       <div className="popover-title">Đăng nhập</div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div className="field">
           <label>Tài khoản</label>
           <select
@@ -96,7 +179,7 @@ function LoginForm({ data, login, onDone }) {
             onChange={(e) => { setSelectedId(e.target.value); setError('') }}
           >
             <option value="">— Chọn tên của bạn —</option>
-            {data.accounts.map((a) => (
+            {accounts.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name}{a.role === 'admin' ? ' (Admin)' : ''}
               </option>
@@ -123,7 +206,12 @@ function LoginForm({ data, login, onDone }) {
           Đăng nhập
         </button>
       </form>
-      <p className="popover-hint">Mật khẩu mặc định: <code>theb123</code></p>
+      <p className="popover-hint">
+        Chưa có tài khoản?{' '}
+        <button type="button" className="link-btn" onClick={() => switchMode('register')}>
+          Đăng ký
+        </button>
+      </p>
     </div>
   )
 }
@@ -147,8 +235,8 @@ function LoggedInMenu({ currentUser, isAdmin, onUpdate, onLogout }) {
   )
 }
 
-function UpdateModal({ currentUser, data, actions, syncUser, onClose }) {
-  const account = data.accounts.find((a) => a.id === currentUser.id)
+function UpdateModal({ currentUser, accounts, updateAccount, syncUser, onClose }) {
+  const account = accounts.find((a) => a.id === currentUser.id)
   const [name, setName] = useState(currentUser.name)
   const [currentPw, setCurrentPw] = useState('')
   const [newPw, setNewPw] = useState('')
@@ -166,7 +254,7 @@ function UpdateModal({ currentUser, data, actions, syncUser, onClose }) {
     const changes = { name: name.trim() }
     if (newPw.trim()) changes.password = newPw.trim()
 
-    actions.updateAccount(currentUser.id, changes)
+    updateAccount(currentUser.id, changes)
     syncUser({ name: name.trim() })
     setSaved(true)
     setTimeout(onClose, 900)

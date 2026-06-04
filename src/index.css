@@ -61,6 +61,16 @@ h1, h2, h3, h4 {
   letter-spacing: -0.015em;
 }
 
+/* Loading state */
+.app-loading {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--muted);
+}
+
 /* ================================================================
    TOPBAR — nền xanh câu lạc bộ
 ================================================================ */
@@ -1053,6 +1063,19 @@ h1, h2, h3, h4 {
   font-family: monospace;
   color: var(--green-800);
 }
+
+/* Inline link button (inside popover-hint) */
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--green-600);
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.link-btn:hover { color: var(--green-700); }
 
 /* Logged-in dropdown menu */
 .popover-menu { padding: 8px; }

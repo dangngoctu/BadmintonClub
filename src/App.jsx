@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { useStore } from './store/StoreContext.jsx'
+import { useAccounts } from './store/AccountsContext.jsx'
 import { useAuth } from './store/AuthContext.jsx'
 import { activeSession } from './utils/helpers.js'
 import CourtsPanel from './components/CourtsPanel.jsx'
@@ -25,15 +26,20 @@ const TABS = [
 ]
 
 export default function App() {
-  const { data, actions } = useStore()
+  const { data, isReady: storeReady, actions } = useStore()
+  const { accounts, isReady: accountsReady, importAccounts } = useAccounts()
   const { isAdmin, isLoggedIn } = useAuth()
   const [tab, setTab] = useState('courts')
   const fileInputRef = useRef(null)
 
+  if (!storeReady || !accountsReady) {
+    return <div className="app-loading">Đang tải dữ liệu…</div>
+  }
+
   const openCount = data.courts.filter((c) => activeSession(data.sessions, c.id)).length
 
   const handleExport = () => {
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const blob = new Blob([JSON.stringify({ ...data, accounts }, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -48,7 +54,9 @@ export default function App() {
     const reader = new FileReader()
     reader.onload = () => {
       try {
-        actions.importData(JSON.parse(reader.result))
+        const parsed = JSON.parse(reader.result)
+        actions.importData(parsed)
+        if (Array.isArray(parsed.accounts)) importAccounts(parsed.accounts)
         alert('Đã nhập dữ liệu thành công.')
       } catch {
         alert('File JSON không hợp lệ.')

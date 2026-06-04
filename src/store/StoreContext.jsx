@@ -9,50 +9,26 @@ function uid() {
 }
 
 export function StoreProvider({ children }) {
-  const [data, setData] = useState(loadData)
+  const [data, setData] = useState(null)
 
   useEffect(() => {
-    saveData(data)
-  }, [data])
+    loadData().then(setData)
+  }, [])
+
+  // Commit: cập nhật state và lưu file ngay lập tức (fire-and-forget).
+  const set = (updater) => {
+    setData((prev) => {
+      if (prev === null) return prev
+      const next = typeof updater === 'function' ? updater(prev) : updater
+      saveData(next)
+      return next
+    })
+  }
 
   const actions = useMemo(() => {
-    // ---- Tài khoản thành viên ----
-    const addAccount = (name, role = 'guest', password = 'theb123') => {
-      const trimmed = name.trim()
-      if (!trimmed) return
-      setData((d) => ({
-        ...d,
-        accounts: [
-          ...d.accounts,
-          { id: uid(), name: trimmed, password, role, createdAt: new Date().toISOString() },
-        ],
-      }))
-    }
-
-    const updateAccount = (accountId, changes) => {
-      setData((d) => ({
-        ...d,
-        accounts: d.accounts.map((a) =>
-          a.id === accountId ? { ...a, ...changes } : a,
-        ),
-      }))
-    }
-
-    const removeAccount = (accountId) => {
-      setData((d) => ({
-        ...d,
-        accounts: d.accounts.filter((a) => a.id !== accountId),
-        sessions: d.sessions.map((s) =>
-          s.status === 'active'
-            ? { ...s, participantIds: s.participantIds.filter((id) => id !== accountId) }
-            : s,
-        ),
-      }))
-    }
-
     // ---- Sân / phiên mở sân ----
     const openCourt = (courtId) => {
-      setData((d) => {
+      set((d) => {
         const alreadyOpen = d.sessions.some((s) => s.courtId === courtId && s.status === 'active')
         if (alreadyOpen) return d
         return {
@@ -73,7 +49,7 @@ export function StoreProvider({ children }) {
     }
 
     const closeCourt = (courtId) => {
-      setData((d) => ({
+      set((d) => ({
         ...d,
         sessions: d.sessions.map((s) =>
           s.courtId === courtId && s.status === 'active'
@@ -84,7 +60,7 @@ export function StoreProvider({ children }) {
     }
 
     const setParticipant = (sessionId, accountId, joined) => {
-      setData((d) => ({
+      set((d) => ({
         ...d,
         sessions: d.sessions.map((s) => {
           if (s.id !== sessionId) return s
@@ -97,9 +73,21 @@ export function StoreProvider({ children }) {
       }))
     }
 
+    // Dùng khi xoá account: dọn sạch khỏi các phiên đang mở.
+    const purgeParticipant = (accountId) => {
+      set((d) => ({
+        ...d,
+        sessions: d.sessions.map((s) =>
+          s.status === 'active'
+            ? { ...s, participantIds: s.participantIds.filter((id) => id !== accountId) }
+            : s,
+        ),
+      }))
+    }
+
     // ---- Trận đấu (1v1 hoặc 2v2) ----
     const addMatch = ({ sessionId, courtId, teamA, teamB, scoreA, scoreB, format }) => {
-      setData((d) => ({
+      set((d) => ({
         ...d,
         matches: [
           ...d.matches,
@@ -119,20 +107,18 @@ export function StoreProvider({ children }) {
     }
 
     const removeMatch = (matchId) => {
-      setData((d) => ({ ...d, matches: d.matches.filter((m) => m.id !== matchId) }))
+      set((d) => ({ ...d, matches: d.matches.filter((m) => m.id !== matchId) }))
     }
 
     // ---- Xuất / Nhập / Xoá toàn bộ ----
-    const importData = (incoming) => setData(normalize(incoming))
-    const resetData = () => setData(defaultData())
+    const importData = (incoming) => set(normalize(incoming))
+    const resetData = () => set(defaultData())
 
     return {
-      addAccount,
-      updateAccount,
-      removeAccount,
       openCourt,
       closeCourt,
       setParticipant,
+      purgeParticipant,
       addMatch,
       removeMatch,
       importData,
@@ -140,7 +126,8 @@ export function StoreProvider({ children }) {
     }
   }, [])
 
-  const value = useMemo(() => ({ data, actions }), [data, actions])
+  const isReady = data !== null
+  const value = useMemo(() => ({ data: data ?? defaultData(), isReady, actions }), [data, isReady, actions])
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
 }

@@ -1,0 +1,8 @@
+{
+  "courts": [
+    { "id": "court-1", "name": "Sân 1" },
+    { "id": "court-2", "name": "Sân 2" }
+  ],
+  "sessions": [],
+  "matches": []
+}

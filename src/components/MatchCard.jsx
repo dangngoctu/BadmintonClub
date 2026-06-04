@@ -1,7 +1,9 @@
+import { useAccounts } from '../store/AccountsContext.jsx'
 import { courtName, formatDateTime, playerName } from '../utils/helpers.js'
 import { IconX } from './Icons.jsx'
 
-export default function MatchCard({ match, data, onRemove }) {
+export default function MatchCard({ match, courts, onRemove }) {
+  const { accounts } = useAccounts()
   const { teamA, teamB, scoreA, scoreB, format = '2v2' } = match
   const winA = scoreA > scoreB
   const winB = scoreB > scoreA
@@ -10,7 +12,7 @@ export default function MatchCard({ match, data, onRemove }) {
   return (
     <div className="card match-card">
       <div className="match-meta">
-        <span className="tag">{courtName(data.courts, match.courtId)}</span>
+        <span className="tag">{courtName(courts, match.courtId)}</span>
         <span className={`format-badge format-${format}`}>{format.toUpperCase()}</span>
         <span className="muted small">{formatDateTime(match.playedAt)}</span>
         {onRemove && (
@@ -28,7 +30,7 @@ export default function MatchCard({ match, data, onRemove }) {
           </div>
           <div className="team-players">
             {teamA.map((id) => (
-              <span key={id}>{playerName(data.accounts, id)}</span>
+              <span key={id}>{playerName(accounts, id)}</span>
             ))}
           </div>
         </div>
@@ -46,7 +48,7 @@ export default function MatchCard({ match, data, onRemove }) {
           </div>
           <div className="team-players">
             {teamB.map((id) => (
-              <span key={id}>{playerName(data.accounts, id)}</span>
+              <span key={id}>{playerName(accounts, id)}</span>
             ))}
           </div>
         </div>

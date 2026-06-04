@@ -1,4 +1,5 @@
 import { useStore } from '../store/StoreContext.jsx'
+import { useAccounts } from '../store/AccountsContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
 import { activeSession, formatDateTime, formatDuration } from '../utils/helpers.js'
 import { IconCheck, IconPlus, IconLock, IconUnlock } from './Icons.jsx'
@@ -67,7 +68,7 @@ function CourtCard({ court, data, actions, isAdmin, isLoggedIn }) {
             </li>
           </ul>
 
-          <Participants session={session} data={data} actions={actions} isLoggedIn={isLoggedIn} />
+          <Participants session={session} actions={actions} isLoggedIn={isLoggedIn} />
 
           {isAdmin && (
             <button className="btn btn-danger btn-block" onClick={() => actions.closeCourt(court.id)}>
@@ -92,19 +93,20 @@ function CourtCard({ court, data, actions, isAdmin, isLoggedIn }) {
   )
 }
 
-function Participants({ session, data, actions, isLoggedIn }) {
+function Participants({ session, actions, isLoggedIn }) {
+  const { accounts } = useAccounts()
   const joinedIds = new Set(session.participantIds)
 
   return (
     <div className="participants">
       <div className="participants-head">
         <h4>Đăng ký tham gia</h4>
-        {data.accounts.length === 0 && (
+        {accounts.length === 0 && (
           <span className="muted small">Chưa có thành viên — admin thêm ở tab "Thành viên".</span>
         )}
       </div>
       <div className="chip-list">
-        {data.accounts.map((a) => {
+        {accounts.map((a) => {
           const joined = joinedIds.has(a.id)
           return (
             <button

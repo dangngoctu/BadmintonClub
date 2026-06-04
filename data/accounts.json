@@ -1,0 +1,9 @@
+[
+  {
+    "id": "acc-default-admin",
+    "name": "Admin",
+    "password": "theb123",
+    "role": "admin",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]

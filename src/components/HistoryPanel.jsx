@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useStore } from '../store/StoreContext.jsx'
+import { useAccounts } from '../store/AccountsContext.jsx'
 import {
   courtName,
   formatDateTime,
@@ -11,6 +12,7 @@ import { IconX } from './Icons.jsx'
 
 export default function HistoryPanel() {
   const { data } = useStore()
+  const { accounts } = useAccounts()
   const [selected, setSelected] = useState(null)
 
   const sessions = [...data.sessions].sort(
@@ -33,7 +35,7 @@ export default function HistoryPanel() {
         <StatBox value={data.sessions.length} label="Lượt mở sân" />
         <StatBox value={data.matches.length} label="Trận đã đấu" />
         <StatBox value={totalParticipations} label="Lượt tham gia" />
-        <StatBox value={data.accounts.length} label="Người chơi" />
+        <StatBox value={accounts.length} label="Người chơi" />
       </div>
 
       {sessions.length === 0 ? (
@@ -44,7 +46,8 @@ export default function HistoryPanel() {
             <SessionCard
               key={s.id}
               session={s}
-              data={data}
+              courts={data.courts}
+              accounts={accounts}
               matchCount={data.matches.filter((m) => m.sessionId === s.id).length}
               onClick={() => setSelected(s)}
             />
@@ -56,6 +59,7 @@ export default function HistoryPanel() {
         <SessionModal
           session={selected}
           data={data}
+          accounts={accounts}
           onClose={() => setSelected(null)}
         />
       )}
@@ -72,14 +76,14 @@ function StatBox({ value, label }) {
   )
 }
 
-function SessionCard({ session, data, matchCount, onClick }) {
+function SessionCard({ session, courts, accounts, matchCount, onClick }) {
   const isOpen = session.status === 'active'
 
   return (
     <button className="card session-card session-card-btn" onClick={onClick}>
       <div className="session-head">
         <div>
-          <h3>{courtName(data.courts, session.courtId)}</h3>
+          <h3>{courtName(courts, session.courtId)}</h3>
           <span className="muted small">
             {formatDateTime(session.openedAt)}
             {session.closedAt ? ` → ${formatDateTime(session.closedAt)}` : ''}
@@ -117,7 +121,7 @@ function SessionCard({ session, data, matchCount, onClick }) {
           <div className="chip-list" style={{ marginTop: 8 }}>
             {session.participantIds.map((id) => (
               <span key={id} className="chip chip-static">
-                {playerName(data.accounts, id)}
+                {playerName(accounts, id)}
               </span>
             ))}
           </div>
@@ -127,7 +131,7 @@ function SessionCard({ session, data, matchCount, onClick }) {
   )
 }
 
-function SessionModal({ session, data, onClose }) {
+function SessionModal({ session, data, accounts, onClose }) {
   const isOpen = session.status === 'active'
   const matches = data.matches
     .filter((m) => m.sessionId === session.id)
@@ -163,7 +167,7 @@ function SessionModal({ session, data, onClose }) {
             <div className="chip-list">
               {session.participantIds.map((id) => (
                 <span key={id} className="chip chip-static">
-                  {playerName(data.accounts, id)}
+                  {playerName(accounts, id)}
                 </span>
               ))}
             </div>
@@ -179,7 +183,7 @@ function SessionModal({ session, data, onClose }) {
           ) : (
             <div className="match-list">
               {matches.map((m) => (
-                <MatchCard key={m.id} match={m} data={data} onRemove={null} />
+                <MatchCard key={m.id} match={m} courts={data.courts} onRemove={null} />
               ))}
             </div>
           )}
