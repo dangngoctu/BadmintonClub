@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useStore } from '../store/StoreContext.jsx'
 import { useAccounts } from '../store/AccountsContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
@@ -74,6 +75,16 @@ function CourtCard({ court, data, actions, isAdmin, isLoggedIn }) {
 }
 
 function ClosedCard({ court, actions, isAdmin }) {
+  const todayStr = new Date().toISOString().split('T')[0]
+  const [picking, setPicking] = useState(false)
+  const [date, setDate] = useState(todayStr)
+
+  const handleOpen = () => {
+    actions.openCourt(court.id, date)
+    setPicking(false)
+    setDate(todayStr)
+  }
+
   return (
     <div className="closed-card-inner">
       <div className="closed-card-top">
@@ -88,13 +99,41 @@ function ClosedCard({ court, actions, isAdmin }) {
         </span>
       </div>
       {isAdmin && (
-        <button
-          className="btn btn-primary btn-block"
-          style={{ marginTop: 16 }}
-          onClick={() => actions.openCourt(court.id)}
-        >
-          <IconUnlock size={16} /> Mở sân
-        </button>
+        picking ? (
+          <div className="open-court-form">
+            <div className="field">
+              <label>Ngày tổ chức</label>
+              <input
+                type="date"
+                className="input"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                autoFocus
+              />
+            </div>
+            <div className="open-court-actions">
+              <button
+                className="btn btn-primary"
+                style={{ flex: 1 }}
+                disabled={!date}
+                onClick={handleOpen}
+              >
+                <IconUnlock size={16} /> Xác nhận mở sân
+              </button>
+              <button className="btn btn-outline" onClick={() => setPicking(false)}>
+                Hủy
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            className="btn btn-primary btn-block"
+            style={{ marginTop: 16 }}
+            onClick={() => setPicking(true)}
+          >
+            <IconUnlock size={16} /> Mở sân
+          </button>
+        )
       )}
     </div>
   )

@@ -27,10 +27,18 @@ export function StoreProvider({ children }) {
 
   const actions = useMemo(() => {
     // ---- Sân / phiên mở sân ----
-    const openCourt = (courtId) => {
+    const openCourt = (courtId, scheduledDate = null) => {
       set((d) => {
         const alreadyOpen = d.sessions.some((s) => s.courtId === courtId && s.status === 'active')
         if (alreadyOpen) return d
+        let openedAt
+        if (scheduledDate) {
+          const [y, mo, day] = scheduledDate.split('-').map(Number)
+          const now = new Date()
+          openedAt = new Date(y, mo - 1, day, now.getHours(), now.getMinutes(), now.getSeconds()).toISOString()
+        } else {
+          openedAt = new Date().toISOString()
+        }
         return {
           ...d,
           sessions: [
@@ -39,7 +47,7 @@ export function StoreProvider({ children }) {
               id: uid(),
               courtId,
               status: 'active',
-              openedAt: new Date().toISOString(),
+              openedAt,
               closedAt: null,
               participantIds: [],
             },

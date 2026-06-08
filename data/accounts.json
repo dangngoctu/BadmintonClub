@@ -12,5 +12,40 @@
     "password": "rcvn123456",
     "role": "guest",
     "createdAt": "2026-06-04T08:22:57.076Z"
+  },
+  {
+    "id": "acc-mq4mf7zzob32",
+    "name": "Vinh Nguyễn",
+    "password": "Abc@123456",
+    "role": "guest",
+    "createdAt": "2026-06-08T02:57:57.312Z"
+  },
+  {
+    "id": "acc-mq4mh6w5a2ab",
+    "name": "Minh Trí",
+    "password": "123456",
+    "role": "admin",
+    "createdAt": "2026-06-08T02:59:29.189Z"
+  },
+  {
+    "id": "acc-mq4n5fszye83",
+    "name": "Anh",
+    "password": "12345678",
+    "role": "guest",
+    "createdAt": "2026-06-08T03:18:20.483Z"
+  },
+  {
+    "id": "acc-mq4q66zg1rgo",
+    "name": "Hằng Ngô",
+    "password": "chucmotngaytotlanh",
+    "role": "guest",
+    "createdAt": "2026-06-08T04:42:54.556Z"
+  },
+  {
+    "id": "acc-mq4tfa5j9h97",
+    "name": "Tuấn",
+    "password": "rcvn123456",
+    "role": "guest",
+    "createdAt": "2026-06-08T06:13:57.415Z"
   }
 ]

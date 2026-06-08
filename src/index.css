@@ -2110,6 +2110,243 @@ h1, h2, h3, h4 {
 .my-rank-animal { font-size: 24px; margin-right: 4px; }
 
 /* ================================================================
+   CALENDAR VIEW
+================================================================ */
+.cal-wrap {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: fadeUp .3s ease both;
+}
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1.5px solid var(--line);
+  background: var(--panel);
+}
+
+.cal-nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.cal-nav-btn {
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--line-md);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background .12s, border-color .12s, color .12s;
+  flex-shrink: 0;
+}
+.cal-nav-btn:hover {
+  background: var(--green-50);
+  border-color: var(--green-400);
+  color: var(--green-800);
+}
+
+.cal-nav-today {
+  border: 1.5px solid var(--line-md);
+  border-radius: 8px;
+  padding: 6px 14px;
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s, border-color .12s, color .12s;
+  flex-shrink: 0;
+}
+.cal-nav-today:hover {
+  background: var(--green-50);
+  border-color: var(--green-400);
+  color: var(--green-800);
+}
+
+/* Headers row */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1.5px solid var(--line);
+}
+
+.cal-day-header {
+  text-align: center;
+  padding: 9px 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+}
+.cal-day-header:last-child { border-right: none; }
+.cal-day-sun { color: #ef4444; }
+
+/* Cells grid — separate from header row */
+.cal-cells {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-cell {
+  min-height: 96px;
+  padding: 5px 5px 4px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: var(--panel);
+  transition: background .1s;
+}
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell:nth-last-child(-n+7) { border-bottom: none; }
+
+.cal-cell-other { background: var(--surface); }
+.cal-cell-other .cal-date-num { color: #c4c9d4; }
+
+.cal-cell-today { background: #f0fdf6; }
+.cal-cell-sun .cal-date-num { color: #ef4444; }
+.cal-cell-other.cal-cell-sun .cal-date-num { color: #fca5a5; }
+
+/* Date number badge */
+.cal-date-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  align-self: flex-end;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cal-date-today {
+  background: var(--green-600);
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* Event pill */
+.cal-event {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: filter .12s, transform .1s;
+}
+.cal-event:hover {
+  filter: brightness(.9);
+  transform: scale(1.02);
+}
+
+.cal-event-closed {
+  background: var(--green-100);
+  color: var(--green-800);
+}
+.cal-event-active {
+  background: linear-gradient(90deg, #0f766e, #0891b2);
+  color: #fff;
+}
+
+.cal-event-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .7;
+  flex-shrink: 0;
+}
+
+.cal-event-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cal-event-count {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: .75;
+  background: rgba(0,0,0,.1);
+  border-radius: 4px;
+  padding: 0px 4px;
+}
+
+/* ── Modal quick stats ───────────────────────────────────────── */
+.modal-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.modal-quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 8px 10px;
+}
+
+.modal-quick-icon { font-size: 20px; line-height: 1; }
+.modal-quick-val  { font-size: 20px; font-weight: 800; color: var(--green-800); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.modal-quick-lbl  { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+
+/* ================================================================
+   OPEN COURT FORM — date picker inline
+================================================================ */
+.open-court-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--green-50);
+  border: 1.5px solid var(--green-200);
+  border-radius: var(--radius-sm);
+  animation: fadeUp .18s ease both;
+}
+
+.open-court-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ================================================================
    PASSION SCORE — session modal
 ================================================================ */
 .passion-grid {
@@ -2217,4 +2454,11 @@ h1, h2, h3, h4 {
   .court-mini-stats { grid-template-columns: repeat(3, 1fr); }
   .col-form { display: none; }
   .session-card-title { font-size: 16px; }
+
+  .cal-cell { min-height: 64px; padding: 3px 3px 2px; }
+  .cal-date-num { width: 22px; height: 22px; font-size: 11px; }
+  .cal-event { font-size: 10px; padding: 2px 4px; }
+  .cal-event-count { display: none; }
+  .cal-nav-title { font-size: 14px; }
+  .modal-quick-stats { grid-template-columns: repeat(3, 1fr); }
 }

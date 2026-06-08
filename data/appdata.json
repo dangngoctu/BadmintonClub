@@ -17,6 +17,20 @@
       "openedAt": "2026-06-04T08:23:23.648Z",
       "closedAt": "2026-06-04T09:52:18.585Z",
       "participantIds": []
+    },
+    {
+      "id": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "status": "active",
+      "openedAt": "2026-06-09T02:54:56.508Z",
+      "closedAt": null,
+      "participantIds": [
+        "acc-default-admin",
+        "acc-mq4n5fszye83",
+        "acc-mq4mf7zzob32",
+        "acc-mq4q66zg1rgo",
+        "acc-mq4tfa5j9h97"
+      ]
     }
   ],
   "matches": [],
