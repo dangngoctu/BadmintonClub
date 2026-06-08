@@ -6,6 +6,10 @@ import {
   formatDateTime,
   formatDuration,
   playerName,
+  getPlayerAnimal,
+  getPlayerColor,
+  computePassionScores,
+  getPassionLevel,
 } from '../utils/helpers.js'
 import MatchCard from './MatchCard.jsx'
 import { IconX } from './Icons.jsx'
@@ -64,6 +68,51 @@ export default function HistoryPanel() {
         />
       )}
     </section>
+  )
+}
+
+function PassionSection({ session, data, accounts }) {
+  const sessionMatches = data.matches.filter(m => m.sessionId === session.id)
+  if (session.participantIds.length === 0 || sessionMatches.length === 0) return null
+
+  const scores = computePassionScores(sessionMatches, data.matches, session.participantIds, accounts)
+  const sorted = [...scores].sort((a, b) => b.pct - a.pct)
+
+  return (
+    <div className="modal-section">
+      <div className="section-label">Độ nhiệt huyết trong buổi</div>
+      <div className="passion-grid">
+        {sorted.map(p => {
+          const level = getPassionLevel(p.pct)
+          const color = getPlayerColor(p.id)
+          return (
+            <div key={p.id} className="passion-card" style={{ borderTop: `3px solid ${level.color}` }}>
+              <div className="passion-player">
+                <div className="passion-avatar" style={{ background: color + '22', color }}>
+                  {getPlayerAnimal(p.id)}
+                </div>
+                <span className="passion-name">{playerName(accounts, p.id)}</span>
+              </div>
+              {p.matchCount === 0 ? (
+                <span className="passion-no-match">Không có trận nào</span>
+              ) : (
+                <>
+                  <div className="passion-bar-wrap">
+                    <div className="passion-bar" style={{ width: `${p.pct}%`, background: level.bar }} />
+                  </div>
+                  <div className="passion-footer">
+                    <span className="passion-pct" style={{ color: level.color }}>{p.pct}%</span>
+                    <span className="passion-level" style={{ background: level.color + '20', color: level.color }}>
+                      {level.icon} {level.label}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
@@ -173,6 +222,8 @@ function SessionModal({ session, data, accounts, onClose }) {
             </div>
           </div>
         )}
+
+        <PassionSection session={session} data={data} accounts={accounts} />
 
         <div className="modal-section">
           <div className="section-label">Các trận đấu ({matches.length})</div>
