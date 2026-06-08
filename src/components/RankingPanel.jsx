@@ -240,8 +240,8 @@ export default function RankingPanel() {
                   <th className="col-rank">Hạng</th>
                   <th>Thành viên</th>
                   <th className="col-num">Điểm</th>
-                  <th className="col-num">Thắng</th>
-                  <th className="col-num">Thua</th>
+                  <th className="col-num col-wins">Thắng</th>
+                  <th className="col-num col-losses">Thua</th>
                   <th className="col-rate">Tỷ lệ</th>
                   <th className="col-form">Phong độ (5 trận)</th>
                 </tr>
@@ -280,8 +280,8 @@ export default function RankingPanel() {
                       <td className="col-num">
                         <span className="rank-pts-badge">{player.rankingPoint}</span>
                       </td>
-                      <td className="col-num rank-win">{player.wins}</td>
-                      <td className="col-num rank-lose">{player.losses}</td>
+                      <td className="col-num col-wins rank-win">{player.wins}</td>
+                      <td className="col-num col-losses rank-lose">{player.losses}</td>
                       <td className="col-rate">
                         <div className="rank-rate-bar-wrap">
                           <div className="rank-rate-bar" style={{ width: `${player.winRate}%` }} />

@@ -112,14 +112,14 @@ export default function App() {
           <div className="topbar-right">
             {isAdmin && (
               <div className="topbar-actions">
-                <button className="btn-topbar" onClick={handleExport}>
-                  <IconDownload size={15} /> Xuất JSON
+                <button className="btn-topbar" onClick={handleExport} title="Xuất JSON">
+                  <IconDownload size={15} /><span className="btn-text"> Xuất JSON</span>
                 </button>
-                <button className="btn-topbar" onClick={() => fileInputRef.current?.click()}>
-                  <IconUpload size={15} /> Nhập JSON
+                <button className="btn-topbar" onClick={() => fileInputRef.current?.click()} title="Nhập JSON">
+                  <IconUpload size={15} /><span className="btn-text"> Nhập JSON</span>
                 </button>
-                <button className="btn-topbar danger" onClick={handleReset}>
-                  <IconTrash size={15} /> Xoá hết
+                <button className="btn-topbar danger" onClick={handleReset} title="Xoá hết">
+                  <IconTrash size={15} /><span className="btn-text"> Xoá hết</span>
                 </button>
                 <input
                   ref={fileInputRef}
@@ -143,7 +143,7 @@ export default function App() {
                   onClick={() => setTab(id)}
                 >
                   <Icon size={17} />
-                  {label}
+                  <span className="tab-label">{label}</span>
                 </button>
               ))}
             </div>

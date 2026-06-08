@@ -2432,33 +2432,202 @@ h1, h2, h3, h4 {
 }
 
 /* ================================================================
-   RESPONSIVE
+   RESPONSIVE — mobile-first
 ================================================================ */
+
+/* ─── 900px: tablet wide ─────────────────────────────────────── */
 @media (max-width: 900px) {
-  .finance-layout { grid-template-columns: 1fr; }
-  .topbar-inner { grid-template-columns: 1fr auto; }
-  .header-stats { display: none; }
+  .finance-layout       { grid-template-columns: 1fr; }
+  .topbar-inner         { grid-template-columns: 1fr auto; }
+  .header-stats         { display: none; }
+
+  .topbar-inner,
+  .tabs-inner,
+  .content-inner        { padding-left: 18px; padding-right: 18px; }
 }
 
-@media (max-width: 640px) {
-  .topbar-inner { padding-top: 12px; padding-bottom: 12px; min-height: unset; }
-  .teams { grid-template-columns: 1fr; }
-  .vs { justify-self: center; }
-  .session-stats { grid-template-columns: 1fr 1fr; }
-  .tabs-status { display: none; }
-  .rank-top3 { grid-template-columns: 1fr; }
-  .rank-awards { grid-template-columns: 1fr; }
-  .my-rank-body { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .my-rank-stats { margin-left: 0; gap: 16px; }
-  .rank-club-stats { grid-template-columns: 1fr 1fr; }
-  .court-mini-stats { grid-template-columns: repeat(3, 1fr); }
-  .col-form { display: none; }
-  .session-card-title { font-size: 16px; }
+/* ─── 768px: tablet ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .topbar-inner,
+  .tabs-inner,
+  .content-inner        { padding-left: 16px; padding-right: 16px; }
 
-  .cal-cell { min-height: 64px; padding: 3px 3px 2px; }
-  .cal-date-num { width: 22px; height: 22px; font-size: 11px; }
-  .cal-event { font-size: 10px; padding: 2px 4px; }
-  .cal-event-count { display: none; }
-  .cal-nav-title { font-size: 14px; }
-  .modal-quick-stats { grid-template-columns: repeat(3, 1fr); }
+  .court-grid           { grid-template-columns: 1fr; }
+  .rank-awards          { grid-template-columns: repeat(3, 1fr); }
+
+  /* Finance monthly table: hide note column */
+  .fin-col-note         { display: none; }
+}
+
+/* ─── 640px: mobile ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* ── Layout & spacing ── */
+  .topbar-inner,
+  .tabs-inner,
+  .content-inner        { padding-left: 14px; padding-right: 14px; }
+  .topbar-inner         { padding-top: 10px; padding-bottom: 10px; min-height: unset; }
+  .content              { padding-top: 20px; padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+
+  /* ── Fix iOS Safari auto-zoom on focus ── */
+  .input, select.input  { font-size: 16px; }
+
+  /* ── Admin topbar buttons: icon only ── */
+  .btn-text             { display: none; }
+  .btn-topbar           { padding: 7px 9px; gap: 0; min-width: 34px; justify-content: center; }
+
+  /* ── Tab bar: fixed bottom navigation ── */
+  .tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: linear-gradient(135deg, #0f766e 0%, #0e7490 60%, #0891b2 100%);
+    border-top: 1.5px solid rgba(255,255,255,.15);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -4px 20px rgba(0,0,0,.28);
+  }
+  .tabs-inner           { padding-left: 0; padding-right: 0; gap: 0; }
+  .tabs-list            { width: 100%; overflow: visible; padding-right: 0; gap: 0; }
+  .tab {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 8px 4px;
+    font-size: 10px;
+    border-bottom: none;
+    border-top: 3px solid transparent;
+    flex-shrink: 1;
+  }
+  .tab-active           { border-bottom-color: transparent; border-top-color: var(--green-400); background: rgba(255,255,255,.12); }
+  .tab-label            { display: block; font-size: 10px; white-space: nowrap; }
+  .tabs-status          { display: none; }
+
+  /* ── Footer: ẩn trên mobile (bottom nav thay thế) ── */
+  .footer               { display: none; }
+
+  /* ── Cards: tighter padding ── */
+  .card                 { padding: 14px; }
+
+  /* ── Stat row: 2 columns ── */
+  .stat-row             { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-box             { padding: 14px 16px; }
+  .stat-box-value       { font-size: 24px; }
+
+  /* ── Court panel ── */
+  .court-mini-stats     { grid-template-columns: repeat(3, 1fr); }
+  .session-card-title   { font-size: 16px; }
+  .session-stats        { grid-template-columns: 1fr 1fr; }
+
+  /* ── Open court form ── */
+  .open-court-actions   { flex-direction: column; }
+
+  /* ── Accounts panel ── */
+  .add-account-row      { flex-direction: column; }
+  .add-account-row .btn { justify-content: center; }
+  .inline-form.grow     { flex-wrap: wrap; }
+  .player-row           { flex-wrap: wrap; gap: 8px; }
+  .row-actions          {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid var(--line);
+    padding-top: 6px;
+  }
+
+  /* ── Match form ── */
+  .form-row-top         { gap: 10px; }
+  .teams                { grid-template-columns: 1fr; }
+  .vs                   { justify-self: center; }
+
+  /* ── Match card ── */
+  .match-meta           { flex-wrap: wrap; gap: 6px; }
+  .match-score          { font-size: 24px; gap: 6px; }
+
+  /* ── Finance panel ── */
+  .fin-entries-head     { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .fin-filters          { width: 100%; }
+  .fin-table td,
+  .fin-table th         { padding: 8px 10px; }
+
+  /* ── Ranking panel ── */
+  .rank-top3            { grid-template-columns: 1fr; }
+  .rank-awards          { grid-template-columns: 1fr; }
+  .my-rank-body         { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .my-rank-stats        { margin-left: 0; gap: 16px; }
+  .rank-club-stats      { grid-template-columns: 1fr 1fr; }
+  .col-form             { display: none; }
+  .rank-table-wrap      { font-size: 13px; }
+  .rank-table th,
+  .rank-table td        { padding: 9px 10px; }
+
+  /* ── Calendar ── */
+  .cal-nav              { padding: 12px 14px; gap: 8px; }
+  .cal-nav-title        { font-size: 14px; }
+  .cal-cell             { min-height: 64px; padding: 3px 3px 2px; }
+  .cal-date-num         { width: 22px; height: 22px; font-size: 11px; }
+  .cal-event            { font-size: 10px; padding: 2px 4px; }
+  .cal-event-count      { display: none; }
+
+  /* ── Modal: bottom sheet (above bottom nav) ── */
+  .modal-overlay        { align-items: flex-end; padding: 0; padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+  .modal                {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .modal-head           { padding: 16px 16px 12px; }
+  .modal-section        { padding: 14px 16px; }
+  .modal-quick-stats    { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .modal-quick-val      { font-size: 17px; }
+
+  /* ── Passion grid: 2 columns ── */
+  .passion-grid         { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ─── 400px: small phone ─────────────────────────────────────── */
+@media (max-width: 400px) {
+  .topbar-inner,
+  .tabs-inner,
+  .content-inner        { padding-left: 10px; padding-right: 10px; }
+
+  /* ── Brand compact ── */
+  .brand-mark           { width: 36px; height: 36px; border-radius: 9px; }
+  .brand-name           { font-size: 15px; }
+  .brand-sub            { font-size: 10px; }
+
+  /* ── Tabs: compact but keep labels ── */
+  .tab                  { padding: 6px 2px; }
+  .tab-label            { font-size: 9px; }
+
+  /* ── Stats ── */
+  .stat-box             { padding: 12px; }
+  .stat-box-value       { font-size: 21px; }
+  .stat-box-label       { font-size: 12px; }
+
+  /* ── Calendar: ultra compact ── */
+  .cal-cell             { min-height: 52px; }
+  .cal-day-header       { font-size: 10px; padding: 7px 2px; letter-spacing: 0; }
+  .cal-event            { font-size: 9px; padding: 1px 3px; border-radius: 3px; }
+  .cal-nav-btn          { width: 30px; height: 30px; }
+
+  /* ── Match card ── */
+  .match-score          { font-size: 20px; }
+  .match-body           { gap: 8px; }
+  .match-team .team-players { font-size: 13px; }
+
+  /* ── Finance table: scrollable, compact ── */
+  .fin-table td,
+  .fin-table th         { padding: 6px 8px; font-size: 12.5px; }
+  .fin-date             { font-size: 11px; }
+
+  /* ── Ranking table: hide win/loss columns ── */
+  .rank-table .col-wins,
+  .rank-table .col-losses { display: none; }
+
+  /* ── My rank card ── */
+  .my-rank-num          { font-size: 32px; }
+  .my-rank-name         { font-size: 15px; }
+  .my-rank-stat-val     { font-size: 17px; }
 }
