@@ -3,12 +3,14 @@ import { useStore } from '../store/StoreContext.jsx'
 import { useAccounts } from '../store/AccountsContext.jsx'
 import { useAuth } from '../store/AuthContext.jsx'
 import { getPlayerAnimal, getPlayerColor, getFormGuide } from '../utils/helpers.js'
+import MatchCard from './MatchCard.jsx'
+import { IconX } from './Icons.jsx'
 
 const FILTERS = [
-  { key: 'month',   label: 'Tháng này' },
+  { key: 'month', label: 'Tháng này' },
   { key: '3months', label: '3 tháng' },
-  { key: 'year',    label: 'Năm nay' },
-  { key: 'all',     label: 'Tất cả' },
+  { key: 'year', label: 'Năm nay' },
+  { key: 'all', label: 'Tất cả' },
 ]
 
 const MEDALS = ['🥇', '🥈', '🥉']
@@ -25,9 +27,9 @@ function filterByPeriod(matches, period) {
   const now = new Date()
   return matches.filter((m) => {
     const d = new Date(m.playedAt)
-    if (period === 'month')   return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
+    if (period === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
     if (period === '3months') { const c = new Date(now); c.setMonth(c.getMonth() - 3); return d >= c }
-    if (period === 'year')    return d.getFullYear() === now.getFullYear()
+    if (period === 'year') return d.getFullYear() === now.getFullYear()
     return true
   })
 }
@@ -52,15 +54,15 @@ function computeRankings(matches, accounts) {
     const s = statsMap[acc.id]
     if (!s) continue
     const total = s.wins + s.losses
-    if (total < 10) continue
+    // if (total < 10) continue
     const winRate = (s.wins / total) * 100
     const rankingPoint = s.wins * 10 + s.losses * 3
     list.push({ id: acc.id, name: acc.name, wins: s.wins, losses: s.losses, total, winRate, rankingPoint })
   }
   list.sort((a, b) =>
     b.winRate !== a.winRate ? b.winRate - a.winRate :
-    b.rankingPoint !== a.rankingPoint ? b.rankingPoint - a.rankingPoint :
-    b.total - a.total
+      b.rankingPoint !== a.rankingPoint ? b.rankingPoint - a.rankingPoint :
+        b.total - a.total
   )
   return list
 }
@@ -70,21 +72,22 @@ export default function RankingPanel() {
   const { accounts } = useAccounts()
   const { currentUser } = useAuth()
   const [period, setPeriod] = useState('all')
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
 
   const filtered = useMemo(() => filterByPeriod(data.matches, period), [data.matches, period])
-  const ranked   = useMemo(() => computeRankings(filtered, accounts), [filtered, accounts])
+  const ranked = useMemo(() => computeRankings(filtered, accounts), [filtered, accounts])
 
   const myEntry = currentUser ? ranked.find((r) => r.id === currentUser.id) : null
-  const myRank  = myEntry ? ranked.indexOf(myEntry) + 1 : null
+  const myRank = myEntry ? ranked.indexOf(myEntry) + 1 : null
 
   // Award winners (computed from all matches for credibility)
   const allRanked = useMemo(() => computeRankings(data.matches, accounts), [data.matches, accounts])
-  const awardWins    = allRanked.reduce((a, b) => b.wins  > a.wins  ? b : a, allRanked[0] ?? null)
-  const awardRate    = allRanked.reduce((a, b) => b.winRate > a.winRate ? b : a, allRanked[0] ?? null)
-  const awardActive  = allRanked.reduce((a, b) => b.total > a.total ? b : a, allRanked[0] ?? null)
+  const awardWins = allRanked.reduce((a, b) => b.wins > a.wins ? b : a, allRanked[0] ?? null)
+  const awardRate = allRanked.reduce((a, b) => b.winRate > a.winRate ? b : a, allRanked[0] ?? null)
+  const awardActive = allRanked.reduce((a, b) => b.total > a.total ? b : a, allRanked[0] ?? null)
 
   // Club stats
-  const avgWinRate  = ranked.length > 0 ? ranked.reduce((s, r) => s + r.winRate, 0) / ranked.length : null
+  const avgWinRate = ranked.length > 0 ? ranked.reduce((s, r) => s + r.winRate, 0) / ranked.length : null
 
   return (
     <section className="ranking-panel">
@@ -218,12 +221,17 @@ export default function RankingPanel() {
                       >
                         {getPlayerAnimal(player.id)}
                       </div>
-                      <div className="rank-top3-name">{player.name}</div>
+                      <div className="rank-top3-name">
+                        {player.name}
+                        <span className="rank-mood rank-mood-sm">
+                          {(() => { const m = getMood(player.winRate, player.total); return `${m.icon}` })()}
+                        </span>
+                      </div>
                       <div className="rank-top3-rate">{player.winRate.toFixed(0)}%</div>
                       <div className="rank-top3-pts">{player.rankingPoint} điểm</div>
-                      <div className="rank-mood rank-mood-sm">
+                      {/* <div className="rank-mood rank-mood-sm">
                         {(() => { const m = getMood(player.winRate, player.total); return `${m.icon} ${m.text}` })()}
-                      </div>
+                      </div> */}
                     </div>
                   )
                 })}
@@ -248,12 +256,17 @@ export default function RankingPanel() {
               </thead>
               <tbody>
                 {ranked.map((player, idx) => {
-                  const isMe  = currentUser && player.id === currentUser.id
-                  const mood  = getMood(player.winRate, player.total)
-                  const form  = getFormGuide(filtered, player.id, 5)
+                  const isMe = currentUser && player.id === currentUser.id
+                  const mood = getMood(player.winRate, player.total)
+                  const form = getFormGuide(filtered, player.id, 5)
                   const color = getPlayerColor(player.id)
                   return (
-                    <tr key={player.id} className={`rank-row ${isMe ? 'rank-row-me' : ''}`}>
+                    <tr
+                      key={player.id}
+                      className={`rank-row ${isMe ? 'rank-row-me' : ''}`}
+                      onClick={() => setSelectedPlayer(player)}
+                      title="Xem toàn bộ lịch sử thi đấu"
+                    >
                       <td className="col-rank">
                         {idx < 3
                           ? <span className="rank-medal">{MEDALS[idx]}</span>
@@ -306,7 +319,106 @@ export default function RankingPanel() {
           </div>
         </>
       )}
+
+      {selectedPlayer && (
+        <PlayerHistoryModal
+          player={selectedPlayer}
+          matches={data.matches}
+          courts={data.courts}
+          onClose={() => setSelectedPlayer(null)}
+        />
+      )}
     </section>
+  )
+}
+
+function PlayerHistoryModal({ player, matches, courts, onClose }) {
+  const history = useMemo(() =>
+    matches
+      .filter((m) => m.teamA.includes(player.id) || m.teamB.includes(player.id))
+      .sort((a, b) => new Date(b.playedAt) - new Date(a.playedAt)),
+    [matches, player.id],
+  )
+
+  const wins = history.filter((m) => {
+    const inA = m.teamA.includes(player.id)
+    return inA ? m.scoreA > m.scoreB : m.scoreB > m.scoreA
+  }).length
+  const losses = history.length - wins
+  const winRate = history.length > 0 ? (wins / history.length) * 100 : 0
+  const color = getPlayerColor(player.id)
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-head">
+          <div className="player-modal-title">
+            <span
+              className="rank-player-avatar player-modal-avatar"
+              style={{ backgroundColor: color + '20', color }}
+            >
+              {getPlayerAnimal(player.id)}
+            </span>
+            <div>
+              <h3>{player.name}</h3>
+              <span className="muted small">Toàn bộ lịch sử thi đấu</span>
+            </div>
+          </div>
+          <button className="icon-btn modal-close-btn" onClick={onClose} title="Đóng">
+            <IconX size={18} />
+          </button>
+        </div>
+
+        <div className="modal-section">
+          <div className="modal-quick-stats">
+            <div className="modal-quick-stat">
+              <span className="modal-quick-icon">🏸</span>
+              <span className="modal-quick-val">{history.length}</span>
+              <span className="modal-quick-lbl">Tổng trận</span>
+            </div>
+            <div className="modal-quick-stat">
+              <span className="modal-quick-icon">✅</span>
+              <span className="modal-quick-val">{wins}</span>
+              <span className="modal-quick-lbl">Thắng</span>
+            </div>
+            <div className="modal-quick-stat">
+              <span className="modal-quick-icon">❌</span>
+              <span className="modal-quick-val">{losses}</span>
+              <span className="modal-quick-lbl">Thua</span>
+            </div>
+            <div className="modal-quick-stat">
+              <span className="modal-quick-icon">📊</span>
+              <span className="modal-quick-val">{winRate.toFixed(0)}%</span>
+              <span className="modal-quick-lbl">Tỷ lệ thắng</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="modal-section">
+          <div className="section-label">Các trận đã đấu ({history.length})</div>
+          {history.length === 0 ? (
+            <p className="empty-state" style={{ padding: '20px 0', border: 'none' }}>
+              Chưa có trận đấu nào.
+            </p>
+          ) : (
+            <div className="match-list">
+              {history.map((m) => {
+                const inA = m.teamA.includes(player.id)
+                const won = inA ? m.scoreA > m.scoreB : m.scoreB > m.scoreA
+                return (
+                  <div key={m.id} className={`player-history-item ${won ? 'ph-won' : 'ph-lost'}`}>
+                    <span className={`form-badge form-${won ? 'W' : 'L'} ph-result-badge`}>
+                      {won ? 'W' : 'L'}
+                    </span>
+                    <MatchCard match={m} courts={courts} onRemove={null} />
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 

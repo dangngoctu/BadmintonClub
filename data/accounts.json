@@ -16,7 +16,7 @@
   {
     "id": "acc-mq4mf7zzob32",
     "name": "Vinh Nguyễn",
-    "password": "Abc@123456",
+    "password": "theb123",
     "role": "guest",
     "createdAt": "2026-06-08T02:57:57.312Z"
   },
@@ -54,5 +54,40 @@
     "password": "09031997",
     "role": "guest",
     "createdAt": "2026-06-08T06:29:13.680Z"
+  },
+  {
+    "id": "acc-mq5yc0kuiodm",
+    "name": "Quốc",
+    "password": "123456",
+    "role": "guest",
+    "createdAt": "2026-06-09T01:19:09.294Z"
+  },
+  {
+    "id": "acc-mq5ygx713nbq",
+    "name": "Minh Ân",
+    "password": "admin@123",
+    "role": "guest",
+    "createdAt": "2026-06-09T01:22:58.189Z"
+  },
+  {
+    "id": "acc-mq64ci1g5n0d",
+    "name": "Nguyễn Thành Thức",
+    "password": "123456",
+    "role": "guest",
+    "createdAt": "2026-06-09T04:07:29.620Z"
+  },
+  {
+    "id": "acc-mq6sjf54dmtj",
+    "name": "Trinh",
+    "password": "theb123",
+    "role": "guest",
+    "createdAt": "2026-06-09T15:24:43.240Z"
+  },
+  {
+    "id": "acc-mq6slojnn940",
+    "name": "Hiển",
+    "password": "theb123",
+    "role": "guest",
+    "createdAt": "2026-06-09T15:26:28.739Z"
   }
 ]

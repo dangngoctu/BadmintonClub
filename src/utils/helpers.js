@@ -128,8 +128,8 @@ export function computePassionScores(sessionMatches, allMatches, participantIds,
       const avgOppRank = opponents.reduce((s, id) => s + (rankMap[id] ?? UNRANKED), 0) / opponents.length
       const vsHigher = avgOppRank < myRank
       const vsLower = avgOppRank > myRank
-      if (won) { wins++; score += 10; if (vsHigher) score += 5 }
-      else if (lost) { losses++; score += 5; if (vsLower) score -= 3 }
+      if (won) { wins++; score += 30; if (vsHigher) score += 15 }
+      else if (lost) { losses++; score += 5; if (vsLower) score -= 5 }
       else { score += 3 }
     }
     score = Math.max(0, score)

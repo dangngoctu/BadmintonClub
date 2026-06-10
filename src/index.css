@@ -2109,6 +2109,39 @@ h1, h2, h3, h4 {
 
 .my-rank-animal { font-size: 24px; margin-right: 4px; }
 
+/* Player history modal */
+.rank-table tbody tr.rank-row { cursor: pointer; }
+
+.player-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-modal-avatar {
+  width: 42px; height: 42px;
+  font-size: 24px;
+}
+
+.player-history-item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.player-history-item .match-card { flex: 1; min-width: 0; }
+
+.ph-result-badge {
+  position: absolute;
+  top: -7px; left: -7px;
+  z-index: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+}
+
+.player-history-item.ph-won .match-card { border-left: 3px solid var(--green-500, #22c55e); }
+.player-history-item.ph-lost .match-card { border-left: 3px solid #ef4444; }
+
 /* ================================================================
    CALENDAR VIEW
 ================================================================ */

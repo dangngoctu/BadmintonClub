@@ -13,9 +13,9 @@
     {
       "id": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
       "courtId": "court-1",
-      "status": "active",
+      "status": "closed",
       "openedAt": "2026-06-09T02:54:56.508Z",
-      "closedAt": null,
+      "closedAt": "2026-06-09T15:30:41.016Z",
       "participantIds": [
         "acc-default-admin",
         "acc-mq4n5fszye83",
@@ -23,11 +23,218 @@
         "acc-mq4q66zg1rgo",
         "acc-mq4tfa5j9h97",
         "acc-mq4tyx5cnkx3",
-        "acc-mpz89rg4i3vq"
+        "acc-mq5yc0kuiodm",
+        "acc-mq5ygx713nbq",
+        "acc-mq4mh6w5a2ab",
+        "acc-mq6sjf54dmtj",
+        "acc-mq6slojnn940"
       ]
     }
   ],
-  "matches": [],
+  "matches": [
+    {
+      "id": "c2f40c96-1606-4f76-8211-a7e5a7e98608",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq6sjf54dmtj",
+        "acc-mq4q66zg1rgo"
+      ],
+      "teamB": [
+        "acc-mq4mf7zzob32",
+        "acc-mq4tyx5cnkx3"
+      ],
+      "scoreA": 21,
+      "scoreB": 15,
+      "playedAt": "2026-06-09T15:25:21.049Z"
+    },
+    {
+      "id": "cc844b85-965e-429e-89af-f44c690d49d9",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq4q66zg1rgo",
+        "acc-mq4mf7zzob32"
+      ],
+      "teamB": [
+        "acc-mq4tfa5j9h97",
+        "acc-mq4tyx5cnkx3"
+      ],
+      "scoreA": 17,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:25:45.971Z"
+    },
+    {
+      "id": "41c6e4ac-4acd-4834-8709-adcf9c1006a4",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq4tfa5j9h97",
+        "acc-mq6slojnn940"
+      ],
+      "teamB": [
+        "acc-mq5ygx713nbq",
+        "acc-mq4tyx5cnkx3"
+      ],
+      "scoreA": 15,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:27:02.236Z"
+    },
+    {
+      "id": "fbca0b49-6958-4cb8-8fd8-ab10f7ee11a5",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq6sjf54dmtj",
+        "acc-mq4mf7zzob32"
+      ],
+      "teamB": [
+        "acc-mq5yc0kuiodm",
+        "acc-mq5ygx713nbq"
+      ],
+      "scoreA": 16,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:27:37.884Z"
+    },
+    {
+      "id": "304bc680-1a6e-427a-84d3-d823fe6d8585",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-default-admin",
+        "acc-mq4mf7zzob32"
+      ],
+      "teamB": [
+        "acc-mq5ygx713nbq",
+        "acc-mq4tfa5j9h97"
+      ],
+      "scoreA": 12,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:27:57.413Z"
+    },
+    {
+      "id": "0f9abc5b-a4b4-40e3-b1a6-eb6075245ae7",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq6slojnn940",
+        "acc-mq4q66zg1rgo"
+      ],
+      "teamB": [
+        "acc-mq4tyx5cnkx3",
+        "acc-mq4n5fszye83"
+      ],
+      "scoreA": 18,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:28:16.213Z"
+    },
+    {
+      "id": "77b7b5d6-77f2-459a-8f0b-5e3cd64de120",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq4tyx5cnkx3",
+        "acc-mq4n5fszye83"
+      ],
+      "teamB": [
+        "acc-mq6sjf54dmtj",
+        "acc-mq4q66zg1rgo"
+      ],
+      "scoreA": 23,
+      "scoreB": 25,
+      "playedAt": "2026-06-09T15:28:41.457Z"
+    },
+    {
+      "id": "0172dda8-781e-4a66-90c4-3621e2011ea6",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq4mh6w5a2ab",
+        "acc-mq4mf7zzob32"
+      ],
+      "teamB": [
+        "acc-mq4tfa5j9h97",
+        "acc-mq5ygx713nbq"
+      ],
+      "scoreA": 21,
+      "scoreB": 16,
+      "playedAt": "2026-06-09T15:29:05.387Z"
+    },
+    {
+      "id": "e90e34e5-af65-40d6-86b5-2db2fe5e2645",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq6slojnn940",
+        "acc-mq5yc0kuiodm"
+      ],
+      "teamB": [
+        "acc-mq6sjf54dmtj",
+        "acc-mq4tyx5cnkx3"
+      ],
+      "scoreA": 9,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:29:28.476Z"
+    },
+    {
+      "id": "b384e631-8e2e-484c-bdf5-f8f47df313ee",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq4q66zg1rgo",
+        "acc-mq5ygx713nbq"
+      ],
+      "teamB": [
+        "acc-mq4mf7zzob32",
+        "acc-mq4tfa5j9h97"
+      ],
+      "scoreA": 23,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:29:56.353Z"
+    },
+    {
+      "id": "1a4ffb40-40fc-4d73-a717-e6d1ea79bd34",
+      "format": "2v2",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-mq4tyx5cnkx3",
+        "acc-default-admin"
+      ],
+      "teamB": [
+        "acc-mq4mf7zzob32",
+        "acc-mq5yc0kuiodm"
+      ],
+      "scoreA": 15,
+      "scoreB": 21,
+      "playedAt": "2026-06-09T15:30:18.701Z"
+    },
+    {
+      "id": "e9b4df38-7ff9-4d58-a614-e5aca27ed677",
+      "format": "1v1",
+      "sessionId": "25b3d318-e605-4afa-923b-ff230ac1a6c8",
+      "courtId": "court-1",
+      "teamA": [
+        "acc-default-admin"
+      ],
+      "teamB": [
+        "acc-mq4mf7zzob32"
+      ],
+      "scoreA": 6,
+      "scoreB": 11,
+      "playedAt": "2026-06-09T15:30:30.696Z"
+    }
+  ],
   "finance": {
     "openingBalance": 0,
     "entries": [
