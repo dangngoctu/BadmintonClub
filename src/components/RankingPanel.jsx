@@ -108,7 +108,27 @@ export default function RankingPanel() {
           </button>
         ))}
       </div>
-
+      {/* Club stats */}
+      <div className="rank-club-stats">
+        <div className="rank-stat-box">
+          <div className="rank-stat-value">{accounts.length}</div>
+          <div className="rank-stat-label">Tổng thành viên</div>
+        </div>
+        <div className="rank-stat-box">
+          <div className="rank-stat-value">{filtered.length}</div>
+          <div className="rank-stat-label">Trận đấu</div>
+        </div>
+        <div className="rank-stat-box">
+          <div className="rank-stat-value">
+            {avgWinRate != null ? `${avgWinRate.toFixed(0)}%` : '—'}
+          </div>
+          <div className="rank-stat-label">Tỷ lệ thắng TB</div>
+        </div>
+        <div className="rank-stat-box">
+          <div className="rank-stat-value rank-stat-name">{ranked.length}</div>
+          <div className="rank-stat-label">Đủ điều kiện xếp hạng</div>
+        </div>
+      </div>
       {/* Award cards */}
       {allRanked.length >= 1 && (
         <div className="rank-awards">
@@ -138,29 +158,6 @@ export default function RankingPanel() {
           />
         </div>
       )}
-
-      {/* Club stats */}
-      <div className="rank-club-stats">
-        <div className="rank-stat-box">
-          <div className="rank-stat-value">{accounts.length}</div>
-          <div className="rank-stat-label">Tổng thành viên</div>
-        </div>
-        <div className="rank-stat-box">
-          <div className="rank-stat-value">{filtered.length}</div>
-          <div className="rank-stat-label">Trận đấu</div>
-        </div>
-        <div className="rank-stat-box">
-          <div className="rank-stat-value">
-            {avgWinRate != null ? `${avgWinRate.toFixed(0)}%` : '—'}
-          </div>
-          <div className="rank-stat-label">Tỷ lệ thắng TB</div>
-        </div>
-        <div className="rank-stat-box">
-          <div className="rank-stat-value rank-stat-name">{ranked.length}</div>
-          <div className="rank-stat-label">Đủ điều kiện xếp hạng</div>
-        </div>
-      </div>
-
       {ranked.length === 0 ? (
         <div className="empty-state">
           Chưa có thành viên nào đủ 10 trận trong kỳ này.<br />
