@@ -23,12 +23,12 @@ import {
 } from './components/Icons.jsx'
 
 const TABS = [
-  { id: 'courts', label: 'Quản lý sân', Icon: IconCourt },
-  { id: 'accounts', label: 'Thành viên', Icon: IconUsers },
-  { id: 'matches', label: 'Trận đấu', Icon: IconTrophy },
-  { id: 'history', label: 'Lịch sử', Icon: IconClock },
-  { id: 'finance', label: 'Tài chính', Icon: IconWallet },
-  { id: 'ranking', label: 'Xếp hạng', Icon: IconRanking },
+  { id: 'courts',   label: 'Sân',       Icon: IconCourt   },
+  { id: 'accounts', label: 'Thành viên', Icon: IconUsers   },
+  { id: 'matches',  label: 'Trận đấu',  Icon: IconTrophy  },
+  { id: 'history',  label: 'Lịch sử',   Icon: IconClock   },
+  { id: 'finance',  label: 'Tài chính', Icon: IconWallet  },
+  { id: 'ranking',  label: 'Xếp hạng',  Icon: IconRanking },
 ]
 
 export default function App() {
@@ -89,7 +89,7 @@ export default function App() {
         <div className="topbar-inner">
           <BrandMenu />
 
-          {/* <div className="header-stats">
+          <div className="header-stats">
             <div className="header-stat">
               <span className="header-stat-icon">👥</span>
               <span className="header-stat-num">{accounts.length}</span>
@@ -105,9 +105,9 @@ export default function App() {
             <div className="header-stat">
               <span className="header-stat-icon">🔥</span>
               <span className="header-stat-num">{activePlayers}</span>
-              <span className="header-stat-label">Đang thi đấu</span>
+              <span className="header-stat-label">Đang chơi</span>
             </div>
-          </div> */}
+          </div>
 
           <div className="topbar-right">
             {isAdmin && (
